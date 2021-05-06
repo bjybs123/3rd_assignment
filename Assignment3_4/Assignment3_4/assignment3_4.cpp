@@ -28,6 +28,7 @@ int main()
 
     cout << "\n\ndelaer\n\n";
     Dealer->print();
+    cout << "shuffle completed\n";
     cout << "dealer count : " << Dealer->getCount()  << "\n";
 
 }
