@@ -11,24 +11,36 @@ int main()
     Link* Dealer = new Link();
     Link* Player = new Link();
 
-    Deck->initial();
+    char* command = new char[100];
+
+    while (true)
+    {
+        cout << "Command list(game/shuffle/exit)\n";
+        cout << "CMD>> ";
+        cin >> command;
+
+        if (strcmp(command, "game") == 0)
+        {
+            Deck->initial();
+            while (true)
+            {
+                cout << "Command list(bet/end)\n";
+                cout << "CMD>> ";
+
+            }
+        }
+        else if(strcmp(command, "shuffle") == 0)
+        {
+            int num;
+            cin >> num;
+            while (num)
+            {
+                Deck->shuffle(Dealer);
+                --num;
+            }
+        }
+    }
     
-    Discard_tray->insert("NA", "M");
-    Discard_tray->insert("SU", "N");
-    Discard_tray->insert("XX", "N");
-
-
- 
-    Deck->place_discard(Discard_tray, Dealer);
-    Deck->shuffle(Dealer);
-    Deck->shuffle(Dealer);
-
-    Deck->print();
-    cout << "deck count : " << Deck->getCount() << "\n";
-
-    cout << "\n\ndelaer\n\n";
-    Dealer->print();
-    cout << "shuffle completed\n";
-    cout << "dealer count : " << Dealer->getCount()  << "\n";
+    
 
 }

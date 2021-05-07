@@ -73,6 +73,7 @@ public:
     void initial();
     void place_discard(Link* discardIn, Link* dealerIn);
     void shuffle(Link* dealerIn);
+    void pick(Link*);
 };
 
 //Link's method functions
@@ -300,7 +301,10 @@ void Link::shuffle(Link* dealerIn)
     }
     curNode->setNext(tempHead);
 }
+void Link::pick(Link*)
+{
 
+}
 
 
 //Node's method functions
