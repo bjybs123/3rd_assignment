@@ -9,6 +9,8 @@
 
 using namespace std;
 
+
+
 void cardCat(char* card, const char* suit, const char* face)
 {
     int i, j, k;
@@ -58,10 +60,6 @@ public:
     {
         return score;
     }
-    void setScore(int scoreIn)
-    {
-        score = scoreIn;
-    }
     void setHead(Node*);
     int getCount();
     void insert(const char*, const char*);
@@ -73,28 +71,9 @@ public:
     void place_discard(Link* discardIn, Link* dealerIn);
     void shuffle(Link* dealerIn);
     void pick(Link*);
-    void place(Link* eraseDeck)
-    {
-        Node* movingNode = eraseDeck->getHead();
-        while (movingNode)
-        {
-            if (movingNode->getNext() != nullptr)
-            {
-                Node* deleteNode = movingNode;
-                this->insert(movingNode->getCard());
-                movingNode = movingNode->getNext();
-                eraseDeck->delNode(deleteNode->getCard());
-
-            }
-            else if (movingNode->getNext() == nullptr)
-            {
-                Node* deleteNode = movingNode;
-                this->insert(movingNode->getCard());
-                eraseDeck->delNode(deleteNode->getCard());
-                break;
-            }
-        }
-    }
+    void place(Link* discardIn);
+    void setScore(int);
+    
 };
 
 //Link's method functions
@@ -102,6 +81,7 @@ Link::Link()
 {
     pHead = nullptr;
     count = 0;
+    score = 0;
 }
 int Link::getCount()
 {
@@ -176,32 +156,26 @@ void Link::insert(char* nameIn)
 }
 void Link::delNode(char* cardIn)
 {
-    Node* prevNode = nullptr;
+    Node* prevNode = NULL;
     Node* currNode = pHead;
-    if (pHead->getNext());
-    else {
-        while (currNode && (strcmp(currNode->getCard(), cardIn) != 0))
-        {
-            prevNode = currNode;
-            currNode = currNode->getNext();
+    while (currNode && (strcmp(currNode->getCard(), cardIn) != 0))
+    {
+        prevNode = currNode;
+        currNode = currNode->getNext();
+    }
+    if (currNode) {
+        if (prevNode) {
+            prevNode->setNext(currNode->getNext());
+            --count;
+            delete currNode;
         }
-        if (currNode)
-        {
-            if (prevNode)
-            {
-                prevNode->setNext(currNode->getNext());
-                delete currNode;
-                --count;
-            }
-            else
-            {
-                pHead = currNode->getNext();
-                delete currNode;
-                --count;
-            }
+        else {
+            pHead = currNode->getNext();
+            --count;
+            delete currNode;
         }
     }
-    
+
 }
 Node* Link::getHead()
 {
@@ -218,10 +192,7 @@ void Link::place_discard(Link* discardIn, Link* dealerIn)
     Node* curNode = nullptr;
     Node* tempHead = pHead;
     Node* deleteNode;
-    if (discardIn->getHead() == nullptr)
-    {
-        cout << "discard is empty\n";
-    }
+    if (discardIn->getHead() == nullptr);
     else
     {
         while (discardIn->getHead() != nullptr)
@@ -250,10 +221,11 @@ void Link::place_discard(Link* discardIn, Link* dealerIn)
         }
         curNode->setNext(tempHead);
     }
-
     srand((unsigned int)time(NULL));
 
+
     int Num = rand() % count; //널 문자 전까지
+     
     Node* movingNode = pHead;
 
     while (movingNode && (Num > 0))
@@ -299,48 +271,58 @@ void Link::shuffle(Link* dealerIn)
     Node* curNode = nullptr;
     Node* tempHead = pHead;
     Node* deleteNode;
-    while (true)
+
+    while (dealerIn->getHead() != nullptr)
     {
-        Num = rand() % dealerIn->count;
-        if (Num == 0)
-            continue;
-        else
-            break;
-    }
-    if(Num == 0)
-
-    movingNode = pHead;
-    while (dealerIn->getHead() != nullptr && (Num > 0))
-    {
-        Node* newNode = new Node();
-        newNode->setCard(dealerIn->getHead()->getCard());
-
-        deleteNode = dealerIn->getHead();
-
-        if (prevNode == nullptr)
+        while (true)
         {
-            pHead = newNode;
-            curNode = newNode;
-            ++count;
-            --Num;
+            if (dealerIn->count == 1)
+                Num = 1;
+            else
+                Num = rand() % dealerIn->count;
+            if (Num == 0)
+                continue;
+            else
+                break;
         }
-        else
+
+        movingNode = pHead;
+
+        while ((Num > 0))
         {
-            curNode->setNext(newNode);
-            curNode = curNode->getNext();
-            ++count;
-            --Num;
+            Node* newNode = new Node();
+            newNode->setCard(dealerIn->getHead()->getCard());
+
+            deleteNode = dealerIn->getHead();
+
+            if (prevNode == nullptr)
+            {
+                pHead = newNode;
+                curNode = newNode;
+                ++count;
+                --Num;
+            }
+            else
+            {
+                curNode->setNext(newNode);
+                curNode = curNode->getNext();
+                ++count;
+                --Num;
+            }
+            //frontInsert(discardIn->getHead()->getCard());
+            prevNode = dealerIn->getHead();
+            dealerIn->getHead()->setNext(dealerIn->getHead()->getNext());             //다음 노드 이동
+            dealerIn->delNode(deleteNode->getCard());
         }
-        //frontInsert(discardIn->getHead()->getCard());
-        prevNode = dealerIn->getHead();
-        dealerIn->getHead()->setNext(dealerIn->getHead()->getNext());             //다음 노드 이동
-        dealerIn->delNode(deleteNode->getCard());
+        curNode->setNext(tempHead);
     }
-    curNode->setNext(tempHead);
+
+    
 }
 void Link::pick(Link* cardpile)
 {
     int Num = rand() % count;
+   
     Node* tempNode = pHead;
 
     while (tempNode && (Num > 0))
@@ -382,6 +364,45 @@ void Link::qprint()
     }
     cout << "\n";
 }
+void Link::place(Link* discardIn)
+{
+    Node* prevNode = nullptr;
+    Node* curNode = nullptr;
+    Node* tempHead = pHead;
+    Node* deleteNode;
+    if (discardIn->getHead() != nullptr)
+    {
+        while (discardIn->getHead() != nullptr)
+        {
+            Node* newNode = new Node();
+            newNode->setCard(discardIn->getHead()->getCard());
+
+            deleteNode = discardIn->getHead();
+
+            if (prevNode == nullptr)
+            {
+                pHead = newNode;
+                curNode = newNode;
+                ++count;
+            }
+            else
+            {
+                curNode->setNext(newNode);
+                curNode = curNode->getNext();
+                ++count;
+            }
+            //frontInsert(discardIn->getHead()->getCard());
+            prevNode = discardIn->getHead();
+            discardIn->getHead()->setNext(discardIn->getHead()->getNext());             //다음 노드 이동
+            discardIn->delNode(deleteNode->getCard());
+        }
+        curNode->setNext(tempHead);
+    }
+}
+void Link::setScore(int numIn)
+{
+    score = numIn;
+}
 
 //Node's method functions
 Node::Node()
@@ -420,3 +441,4 @@ void Node::setCard(char* nameIn)
     }
     card[i] = '\0';
 }
+
