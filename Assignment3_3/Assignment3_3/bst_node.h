@@ -12,10 +12,8 @@ private:
 public:
 	bst_node();
 	~bst_node();
-
 	void setNode(menu_node*);
 	menu_node* getNode();
-
 	void setLeft(bst_node*);
 	bst_node* getLeft();
 	void setRight(bst_node*);
@@ -39,7 +37,8 @@ public:
 	void insert(char* nameIn, int priceIn);
 	bst_node* _insert(bst_node* rootIn, bst_node* currentNode);
 	void Print_IN(bst_node* pNode);
-	bst_node* delNode(bst_node* pNode, char* nameIn);
+	void delNode(char* nameIn);
+	void removeTree(bst_node*);
 };
 
 
@@ -47,7 +46,7 @@ public:
 //bst_node's method functions
 bst_node::bst_node()
 {
-	pNode = new menu_node();
+	pNode = nullptr;
 	pLeft = nullptr;
 	pRight = nullptr;
 }
@@ -89,7 +88,24 @@ BST::BST()
 }
 BST::~BST()
 {
+	removeTree(root);
+	root = nullptr;
 }
+
+void BST::removeTree(bst_node* pNode)
+{
+	if (pNode)
+	{
+		removeTree(pNode->getLeft());
+
+		removeTree(pNode->getRight());
+
+		delete pNode;
+	}
+
+	_CrtDumpMemoryLeaks();
+}
+
 int BST::getCount()
 {
 	return count;
@@ -98,8 +114,10 @@ void BST::insert(char* nameIn, int priceIn)
 {
 	bst_node* currentBst = new bst_node();
 	bst_node* tempBst = new bst_node();
-	currentBst->getNode()->setMenu(nameIn);
-	currentBst->getNode()->setPrice(priceIn);
+	menu_node* newMenu = new menu_node();
+	newMenu->setMenu(nameIn);
+	newMenu->setPrice(priceIn);
+	currentBst->setNode(newMenu);
 
 	if (root == nullptr)
 	{
@@ -109,11 +127,11 @@ void BST::insert(char* nameIn, int priceIn)
 	else
 	{
 		_insert(root, currentBst);
-		
 	}
 }
 bst_node* BST::_insert(bst_node* rootIn, bst_node* currentNode)
 {
+
 	if (rootIn == nullptr)
 	{
 		++count;
@@ -131,6 +149,7 @@ bst_node* BST::_insert(bst_node* rootIn, bst_node* currentNode)
 	{
 		return rootIn;
 	}
+
 	return rootIn;
 }
 void BST::Print_IN(bst_node* pNode)
@@ -140,62 +159,121 @@ void BST::Print_IN(bst_node* pNode)
 		Print_IN(pNode->getLeft());
 		
 		cout << pNode->getNode()->getMenu();
+
 		if (strlen(pNode->getNode()->getMenu()) < 8)
 		{
 			cout << "\t";
-		}
+		}\
+
 		cout << "\t\t" << pNode->getNode()->getPrice() << "\n";
+
 
 		Print_IN(pNode->getRight());
 	}
 }
-bst_node* BST::delNode(bst_node* pNode, char* nameIn)
+void BST::delNode(char* nameIn)
 {
-	int cmpNum = my_strcmp(pNode->getNode()->getMenu(), nameIn);
-	if (cmpNum == 0)
+	bst_node* movingNode = root;
+	bst_node* prev = nullptr;
+	while (movingNode)
 	{
-		if (pNode->getLeft() == nullptr && pNode->getRight() == nullptr)
+		if (prev == nullptr)
 		{
-			pNode->setNode(nullptr);
-
-		}
-		else if (pNode->getLeft() != nullptr && pNode->getRight() == nullptr)
-		{
-			pNode->setNode(pNode->getLeft()->getNode());
-			pNode->setLeft(nullptr);
-		}
-		else if (pNode->getLeft() == nullptr && pNode->getRight() != nullptr)
-		{
-			pNode->setNode(pNode->getRight()->getNode());
-			pNode->setRight(nullptr);
+			if (my_strcmp(movingNode->getNode()->getMenu(), nameIn) == 0)
+			{
+				if (movingNode->getLeft() == nullptr && movingNode->getRight() == nullptr)
+				{
+					movingNode->setNode(nullptr);
+					return;
+				}
+				else if (movingNode->getLeft() != nullptr && movingNode->getRight() == nullptr)
+				{
+					root = movingNode->getLeft();
+					delete movingNode;
+					return;
+				}
+				else if (movingNode->getLeft() == nullptr && movingNode->getRight() != nullptr)
+				{
+					root = movingNode->getRight();
+					delete movingNode;
+					return;
+				}
+				else if (movingNode->getLeft() != nullptr && movingNode->getRight() != nullptr)
+				{
+					root = movingNode->getRight();
+					movingNode->getRight()->setLeft(movingNode->getLeft());
+					delete movingNode;
+					return;
+				}
+			}
+			else if (my_strcmp(movingNode->getNode()->getMenu(), nameIn) > 0)
+			{
+				prev = movingNode;
+				movingNode = movingNode->getLeft();
+			}
+			else if (my_strcmp(movingNode->getNode()->getMenu(), nameIn) < 0)
+			{
+				prev = movingNode;
+				movingNode = movingNode->getRight();
+			}
+			else
+			{
+				cout << "no exist\n";
+			}
 		}
 		else
 		{
-			pNode->setNode(pNode->getRight()->getNode());
-			pNode->setRight(nullptr);
+			if (my_strcmp(movingNode->getNode()->getMenu(), nameIn) == 0)
+			{
+				if (movingNode->getLeft() == nullptr && movingNode->getRight() == nullptr)
+				{
+					if (prev->getLeft() == movingNode)
+					{
+						prev->setLeft(nullptr);
+					}
+					else if (prev->getRight() == movingNode)
+					{
+						prev->setRight(nullptr);
+					}
+					delete movingNode;
+					return;
+				}
+				else if (movingNode->getLeft() != nullptr && movingNode->getRight() == nullptr)
+				{
+					prev->setLeft(movingNode->getRight());
+					movingNode->getRight()->setLeft(movingNode->getLeft());
+					delete movingNode;
+					return;
+				}
+				else if (movingNode->getLeft() == nullptr && movingNode->getRight() != nullptr)
+				{
+					prev->setRight(movingNode->getLeft());
+					movingNode->getLeft()->setRight(movingNode->getRight());
+					delete movingNode;
+					return;
+				}
+				else if (movingNode->getLeft() != nullptr && movingNode->getRight() != nullptr)
+				{
+					prev->setLeft(movingNode->getRight());
+					movingNode->getRight()->setLeft(movingNode->getLeft());
+					delete movingNode;
+					return;
+				}
+			}
+			else if (my_strcmp(movingNode->getNode()->getMenu(), nameIn) > 0)
+			{
+				prev = movingNode;
+				movingNode = movingNode->getLeft();
+			}
+			else if (my_strcmp(movingNode->getNode()->getMenu(), nameIn) < 0)
+			{
+				prev = movingNode;
+				movingNode = movingNode->getRight();
+			}
+			else
+			{
+				cout << "no exist\n";
+			}
 		}
-		--count;
 	}
-	else if (cmpNum > 0)
-	{
-		if(pNode->getLeft())
-			delNode(pNode->getLeft(), nameIn);
-		else
-		{
-			cout << "BST : Not in menu\n";
-			return nullptr;
-		}
-	}
-	else if (cmpNum < 0)
-	{
-		if(pNode->getRight())
-			delNode(pNode->getRight(), nameIn);
-		else
-		{
-			cout << "BST : Not in menu\n";
-			return nullptr;
-		}
-	}
-
-	return pNode;
 }

@@ -1,6 +1,9 @@
 #include <iostream>
 #include "node.h"
+#include <crtdbg.h>
+
 using namespace std;
+
 
 int calScore(Link* checkLink)
 {
@@ -47,14 +50,14 @@ int calScore(Link* checkLink)
 
 int main()
 {
-    Link* Deck = new Link();
-    Link* Discard_tray = new Link();
-    Link* Dealer = new Link();
-    Link* Player = new Link();
+    Link Deck;
+    Link Discard_tray;
+    Link Dealer;
+    Link Player;
 
     char* command = new char[100];
 
-    Deck->initial();
+    Deck.initial();
 
     while (true)
     {
@@ -64,7 +67,7 @@ int main()
 
         if (strcmp(command, "game") == 0)
         {
-            if (Deck->getCount() != 52)
+            if (Deck.getCount() != 52)
             {
                 cout << "Not Enough Cards\n";
                 continue;
@@ -82,23 +85,23 @@ int main()
                 cout << "CMD>> ";
                 cin >> bet;
 
-                Dealer->setScore(0);
-                Player->setScore(0);
+                Dealer.setScore(0);
+                Player.setScore(0);
 
-                Deck->pick(Dealer);
-                Dealer->setScore(calScore(Dealer));
-                Deck->pick(Dealer);
-                Dealer->setScore(calScore(Dealer));
-                Deck->pick(Player);
-                Player->setScore(calScore(Player));
-                Deck->pick(Player);
-                Player->setScore(calScore(Player));
+                Deck.pick(&Dealer);
+                Dealer.setScore(calScore(&Dealer));
+                Deck.pick(&Dealer);
+                Dealer.setScore(calScore(&Dealer));
+                Deck.pick(&Player);
+                Player.setScore(calScore(&Player));
+                Deck.pick(&Player);
+                Player.setScore(calScore(&Player));
 
                 
 
                 if (strcmp(bet, "bet") == 0)
                 {
-                    if (Deck->getCount() < 13)
+                    if (Deck.getCount() < 13)
                     {
                         cout << "Not Enough Cards\n";
                         continue;
@@ -109,11 +112,11 @@ int main()
                         char* hit = new char[10];
 
                         cout << "Dealer Cards : ";
-                        Dealer->print();
-                        cout << "cout --> " << Dealer->getScore() << "\n";
+                        Dealer.print();
+                        cout << "cout --> " << Dealer.getScore() << "\n";
                         cout << "Player Cards : ";
-                        Player->print();
-                        cout << "cout --> " << Player->getScore() << "\n";
+                        Player.print();
+                        cout << "cout --> " << Player.getScore() << "\n";
 
                         cout << "Command list(hit/stand)\n";                //hit command
                         cout << "CMD>> ";
@@ -121,29 +124,29 @@ int main()
 
                         if (strcmp(hit, "hit") == 0)                        //hit를 할 경우 카드 추가
                         {
-                            Deck->pick(Player);
-                            Player->setScore(calScore(Player));
+                            Deck.pick(&Player);
+                            Player.setScore(calScore(&Player));
 
                             
 
-                            if (Player->getScore() == Dealer->getScore())
+                            if (Player.getScore() == Dealer.getScore())
                             {
                                 cout << "Draw...\n";
-                                Discard_tray->place(Player);
-                                Discard_tray->place(Dealer);
+                                Discard_tray.place(&Player);
+                                Discard_tray.place(&Dealer);
                                 break;
                             }
 
-                            if (Player->getScore() > 21)
+                            if (Player.getScore() > 21)
                             {
 
                                 cout << "Dealer Cards : ";
-                                Dealer->print();
+                                Dealer.print();
                                 cout << "Player Cards : ";
-                                Player->print();
+                                Player.print();
 
-                                Discard_tray->place(Player);
-                                Discard_tray->place(Dealer);
+                                Discard_tray.place(&Player);
+                                Discard_tray.place(&Dealer);
                                 cout << "Player Lose!\n";
                                 break;
                             }
@@ -151,40 +154,40 @@ int main()
                         else if (strcmp(hit, "stand") == 0)
                         {
 
-                            if (Dealer->getScore() <= 16)               //딜러의 카드가 16이하일때 
+                            if (Dealer.getScore() <= 16)               //딜러의 카드가 16이하일때 
                             {
-                                Deck->pick(Dealer);
-                                Dealer->setScore(calScore(Dealer));
+                                Deck.pick(&Dealer);
+                                Dealer.setScore(calScore(&Dealer));
                             }
 
                             cout << "Dealer Cards : ";
-                            Dealer->print();
+                            Dealer.print();
                             cout << "Player Cards : ";
-                            Player->print();
-                            if (Player->getScore() > 21 && Dealer->getScore() <= 21)
+                            Player.print();
+
+                            if (Player.getScore() > 21 && Dealer.getScore() <= 21)
                                 cout << "Player Lose!\n";
-                            else if (Player->getScore() <= 21 && Dealer->getScore() > 21)
+                            else if (Player.getScore() <= 21 && Dealer.getScore() > 21)
                                 cout << "Player Win!\n";
-                            else if(Player->getScore() > 21 && Dealer->getScore() > 21)
+                            else if(Player.getScore() > 21 && Dealer.getScore() > 21)
                                 cout << "Draw...\n";
                             else
                             {
-                                if (Player->getScore() == Dealer->getScore())
+                                if (Player.getScore() == Dealer.getScore())
                                     cout << "Draw...\n";
-                                else if (Player->getScore() > Dealer->getScore())
+                                else if (Player.getScore() > Dealer.getScore())
                                     cout << "Player Win!\n";
-                                else if (Player->getScore() < Dealer->getScore())
+                                else if (Player.getScore() < Dealer.getScore())
                                     cout << "Player Lose!\n";
                             }
-                            Discard_tray->place(Player);
-                            Discard_tray->place(Dealer);
-
+                            Discard_tray.place(&Player);
+                            Discard_tray.place(&Dealer);
+                            delete[] hit;
                             break;
                         }
                         else
                         {
                             cout << "Wrong Command!\n";
-                            continue;
                         }
                         delete[] hit;
                     }
@@ -192,14 +195,15 @@ int main()
                 }
                 else if (strcmp(bet, "end") == 0)
                 {
-                    Discard_tray->place(Player);
-                    Discard_tray->place(Dealer);
+                    Discard_tray.place(&Player);
+                    Discard_tray.place(&Dealer);
                     break;
                 }
                 else
                 {
-                    continue;
+                    cout << "Wrong Command!\n";
                 }
+                delete[] bet;
             }
         }
         else if(strcmp(command, "shuffle") == 0)
@@ -210,8 +214,8 @@ int main()
             while (num)
             {
                 
-                Deck->place_discard(Discard_tray, Dealer);
-                Deck->shuffle(Dealer);
+                Deck.place_discard(&Discard_tray, &Dealer);
+                Deck.shuffle(&Dealer);
                 --num;
             }
             
@@ -219,7 +223,7 @@ int main()
         else if (strcmp(command, "print") == 0)
         {
             cout << "\n";
-            Deck->print();
+            Deck.print();
             cout << "\n";
         }
         else if (strcmp(command, "exit") == 0)
@@ -229,11 +233,12 @@ int main()
         else
         {
             cout << "Wrong Command!\n";
-            continue;
         }
         
     }
-    
-    
 
+    delete[] command;
+
+    _CrtDumpMemoryLeaks();
+    return 0;
 }

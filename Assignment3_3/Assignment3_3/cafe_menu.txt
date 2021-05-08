@@ -1,9 +1,4 @@
 soju, 4000
 hanla, 5000
-soju, 4000
-cheese stick, 6000
-korean wine,4000
-french fries, 6000
-free snack, 0
+ryo, 4000
 anchovy, 1500
-

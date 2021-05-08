@@ -1,4 +1,5 @@
 #include <iostream>
+#include <crtdbg.h>
 
 #define Error100 cerr << "Error 100\n";
 #define Error200 cerr << "Error 200\n";
@@ -99,7 +100,23 @@ public:
 	{
 		root = nullptr;
 	}
+	~BST()
+	{
 
+		if (root)
+		{
+			bstNode* delNode = root;
+			delete_POST(root->getLeft());
+			delete_POST(root->getRight());
+
+			delete delNode;
+
+
+		}
+
+		_CrtDumpMemoryLeaks();
+		
+	}
 	bstNode* getRoot()
 	{
 		return root;
@@ -114,12 +131,10 @@ public:
 
 		if (root == nullptr)
 		{
-			cout << "root is now nullptr root = currentBst\n";
 			root = currentBst;
 		}
 		else
 		{
-			cout << "root is not nullptr insert\n";
 			_insert(root, currentBst);
 		}
 	}
@@ -162,6 +177,7 @@ public:
 			Print_IN(pNode->getRight());
 		}
 	}
+
 	void Print_POST(bstNode* pNode)
 	{
 		if (pNode)
@@ -172,13 +188,24 @@ public:
 			cout << pNode->getData() << "\t";
 		}
 	}
+	void delete_POST(bstNode* pNode)
+	{
+		if (pNode)
+		{
+			bstNode* delNode = pNode;
+			delete_POST(pNode->getLeft());
+			delete_POST(pNode->getRight());
 
+			delete delNode;
+
+		}
+		else
+			return;
+	}
 	bool search(bstNode* pNode, int data)
 	{
-		bstNode* bstLeftNode = new bstNode();
-		bstNode* bstRightNode = new bstNode();
-		bstLeftNode = pNode;
-		bstRightNode = pNode;
+		bstNode* bstLeftNode = pNode;
+		bstNode* bstRightNode = pNode;
 
 		while (bstLeftNode != nullptr)
 		{
@@ -213,6 +240,17 @@ public:
 		front = nullptr;
 		rear = nullptr;
 		size = 0;
+	}
+	~queue()
+	{
+		while (front)
+		{
+			Node* delNode = front;
+
+			front = front->getNext();
+			
+			delete delNode;
+		}
 	}
 	int getSize()
 	{
@@ -261,13 +299,13 @@ public:
 
 	int Dequeue(queue* queue, int data)
 	{
-
+		Node* movingNode = queue->front;
 		int theData;
 		Node* deleteNode;
-		deleteNode = queue->front;
+		deleteNode = movingNode;
 		theData = deleteNode->getData();
-		queue->front = queue->front->getNext();
-		delete deleteNode;
+		movingNode = movingNode->getNext();
+		queue->DeleteNode(theData);
 		queue->size--;
 
 		return theData;
@@ -290,7 +328,30 @@ public:
 
 		cout << '\n';
 	}
+	void DeleteNode(int x)
+	{
+		Node* prevNode = NULL;
+		Node* currNode = front;
+		while (currNode && currNode->getData() != x)
+		{
+			prevNode = currNode;
+			currNode->setData(currNode->getData());
+		}
+		if (currNode)
+		{
+			if (prevNode)
+			{
 
+				prevNode->setData(currNode->getData());
+				delete currNode;
+			}
+			else
+			{
+				front = currNode->getNext();
+				delete currNode;
+			}
+		}
+	}
 };
 
 bool getNum(int* data)
@@ -368,9 +429,10 @@ int main()
 	queue Q;
 	BST tree;
 	int data;
-
 	char* order = new char[100];
 	char* command = new char[100];
+
+	//_CrtSetBreakAlloc(184);
 
 	while (true)
 	{
@@ -384,8 +446,10 @@ int main()
 				if (Estate == false)
 					Q.Enqueue(&Q, data);
 			}
+
 			else
 				continue;
+
 		}
 		else if (strcmp(command, "Dequeue") == 0)
 		{
@@ -407,12 +471,11 @@ int main()
 
 			while (data--)
 			{
-				bstNode* currentBst = new bstNode();
 				int	insertData = Q.Dequeue(&Q, data);
 				tree.insert(insertData);
 			}
-
 		}
+
 		else if (strcmp(command, "Print_Queue") == 0)
 		{
 			Q.print(&Q);
@@ -459,7 +522,7 @@ int main()
 				}
 			}
 		}
-		else if (strcmp(command, "exit") == 0)
+		else if (strcmp(command, "EXIT") == 0)
 		{
 			break;
 		}
@@ -472,6 +535,7 @@ int main()
 	}
 	delete[] command;
 	delete[] order;
+	
 	return 0;
 	
 }

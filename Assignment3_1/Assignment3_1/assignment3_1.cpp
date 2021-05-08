@@ -1,5 +1,4 @@
 #include <iostream>
-#include <crtdbg.h>
 
 using namespace std;
 		
@@ -43,7 +42,11 @@ public:
 	}
 	~Node()			//소멸자
 	{
-		delete[] data;					//동적할당 받은 data 문자열 동적 해제
+		delete[] data;//동적할당 받은 data 문자열 동적 해제
+	}
+	void setData(char* wordIn)
+	{
+		my_strcpy(data, wordIn);
 	}
 	Node* getNext()
 	{
@@ -64,13 +67,20 @@ class Link
 private:
 	int cntSize = 0;			//몇개의 노드가 연결되어 있는지 카운팅 하는 변수
 public:
-	Node* head = new Node;				//해드 노드 
+	Node* head;				//해드 노드 
 	void insert(char* insertStr);
 	bool is_same(char* insertStr);
 	const void print();
 	~Link()
 	{
-		delete head;
+		while (head)
+		{
+			Node* delNode = head;
+
+			head = head->getNext();
+			delete delNode;
+		}
+
 	}
 };
 
@@ -100,18 +110,22 @@ bool Link::is_same(char* insertStr)
 
 void Link::insert(char* insertStr)
 {
-	if (cntSize == 0)			//처음 노드는 비교할 필요 없이 발  
+	Node* currentNode = new Node;
+	currentNode->setData(insertStr);
+
+	if (head == nullptr)			//처음 노드는 비교할 필요 없이 발  
 	{
-		my_strcpy(head->getData(), insertStr);
+		head = currentNode;
 		++cntSize;
 	}
 	else						//첫 노드가 아니라면
 	{
-		Node* currentNode = new Node;		//현재 노드를 새로 할당
+			//현재 노드를 새로 할당
 		Node* tempNode = head;				//임시 노드를 만들어 head를 가르킴
-
 		while (tempNode->getNext() != nullptr)	//끝에 있는 노드의 데이터를 접근하기위해 마지막 노드로 접근
 			tempNode = tempNode->getNext();
+
+
 
 		if (tolower(tempNode->getData()[strlen(tempNode->getData()) - 1]) == tolower(*insertStr))		//만약 마지막 데이터의 마지막 문자와 입련된 문자열 첫번째 문자가 같다면
 		{
@@ -119,7 +133,7 @@ void Link::insert(char* insertStr)
 				cout << "Already exist\n";		//만약 chain이 가능한 상태에서 이미 동일한 문자열이 입력 된 적이 있다면 exist출력	
 			else								//그전에 입력된 적이 없는 문자열이라면 현재 노드에 문자열을 데이터에 복사하고 입력된 노드의 수를 증가.
 			{
-				my_strcpy(currentNode->getData(), insertStr);
+				tempNode->setNext(currentNode);
 				++cntSize;
 			}
 		}
@@ -129,13 +143,6 @@ void Link::insert(char* insertStr)
 			return;
 		}
 
-
-		tempNode = head;		//임시 노드를 다시 맨 마지막 노드로 이동시키고 
-		while (tempNode->getNext() != nullptr)
-		{
-			tempNode = tempNode->getNext();		
-		}
-		tempNode->setNext(currentNode);			//마지막 노드에 현재 노드를 연결시킨다. 
 
 	}
 
@@ -164,12 +171,14 @@ int main()
 	Link node;
 	char* insert = new char[100];		//문자열을 입력받는 char *변수 크기 100으로 동적할당
 
+	
+
 	while (true)
 	{
 		cout << "CMD(Word/exit) >> ";
 		cin >> insert;
 		if (strcmp(insert, "exit") == 0)
-			return 0;
+			break;
 
 		node.insert(insert);
 		node.print();

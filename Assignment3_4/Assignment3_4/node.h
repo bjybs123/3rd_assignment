@@ -9,8 +9,6 @@
 
 using namespace std;
 
-
-
 void cardCat(char* card, const char* suit, const char* face)
 {
     int i, j, k;

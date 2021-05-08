@@ -1,9 +1,20 @@
-#include <iostream>
+
 #include <fstream>
 #include "menu_node.h"
 #include "bst_node.h"
+#include <crtdbg.h>
 
-using namespace std;
+void getName(char*tempName)
+{
+	int i = 0;
+	char c;
+	while (cin.get(c) && c != '\n')
+	{
+		tempName[i] = c;
+		++i;
+	}
+	tempName[i] = '\0';
+}
 
 void FiletoData(Link* menu, BST* tree)
 {
@@ -48,10 +59,12 @@ void FiletoData(Link* menu, BST* tree)
 
 int main()
 {
+	//_CrtSetBreakAlloc(257);
 	int words = 0;
+	BST tree;
 	char* command = new char[100];
-	Link* menu = new Link();
-	BST* tree = new BST();
+	Link menu;
+	
 
 	while (true)
 	{
@@ -61,10 +74,12 @@ int main()
 		
 		if (strcmp(command, "LOAD") == 0)
 		{
-			FiletoData(menu, tree);
-			cout << "load menu count : " << menu->getCount() << "\n";
-			cout << "load tree count : " << tree->getCount() << "\n";
-			words = menu->getCount();
+
+			FiletoData(&menu, &tree);
+			cout << "load menu count : " << menu.getCount() << "\n";
+			cout << "load tree count : " << tree.getCount() << "\n";
+			words = menu.getCount();
+			
 		}
 		else if (strcmp(command, "PRINT") == 0)
 		{
@@ -79,26 +94,28 @@ int main()
 			if (strcmp(order, "MENU") == 0)
 			{
 				cout << "Print by Menu order\n";
-				tree->Print_IN(tree->getRoot());
+				tree.Print_IN(tree.getRoot());
 			}
 			else if (strcmp(order, "PRICE") == 0)
 			{
 				cout << "Print by Price order\n";
-				menu->print();
+				menu.print();
 			}
+			delete[] order;
 		}
 		else if (strcmp(command, "INSERT") == 0)
 		{
 			char* tempName = new char[100];
 			int price;
 			cout << "Menu name : ";
-			cin >> tempName;
+			cin.get();
+			getName(tempName);
 			cout << "price : ";
 			cin >> price;
-			tree->insert(tempName, price);
-			menu->insert(tempName, price);
+			tree.insert(tempName, price);
+			menu.insert(tempName, price);
 
-			words = menu->getCount();
+			words = menu.getCount();
 			delete[] tempName;
 		}
 		else if (strcmp(command, "SEARCH") == 0)
@@ -108,10 +125,14 @@ int main()
 				cout << "Cafe Menu is Empty\n";
 				continue;
 			}
+
 			char* tempName = new char[100];
 			cout << "Menu name : ";
-			cin >> tempName;
-			menu->search(tempName);
+			cin.get();
+			getName(tempName);
+			menu.search(tempName);
+			delete[] tempName;
+
 		}
 		else if (strcmp(command, "DELETE") == 0)
 		{
@@ -120,19 +141,27 @@ int main()
 				cout << "Cafe Menu is Empty\n";
 				continue;
 			}
+
 			char* tempName = new char[100];
-			cout << "Menu name : ";
-			cin >> tempName;
-			menu->delNode(tempName);
-			tree->delNode(tree->getRoot(), tempName);
-			words = menu->getCount();
+			cin.get();
+			getName(tempName);
+
+
+			menu.delNode(tempName);
+			tree.delNode(tempName);
+			words = menu.getCount();
+			delete[] tempName;
+
 		}
 		else if (strcmp(command, "EXIT") == 0)
 		{
-			exit(100);
+			break;
 		}
 
 	}
 
 	delete[] command;
+
+
+	return 0;
 }
