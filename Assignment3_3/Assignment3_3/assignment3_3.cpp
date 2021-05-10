@@ -54,6 +54,7 @@ void FiletoData(Link* menu, BST* tree)
 	}
 
 	delete[] name;
+
 	fin.close();
 }
 
@@ -88,35 +89,31 @@ int main()
 				cout << "Cafe Menu is Empty\n";
 				continue;
 			}
-			char* order = new char[100];
 			cout << "Command list: MENU, PRICE\n";
-			cin >> order;
-			if (strcmp(order, "MENU") == 0)
+			cin >> command;
+			if (strcmp(command, "MENU") == 0)
 			{
 				cout << "Print by Menu order\n";
 				tree.Print_IN(tree.getRoot());
 			}
-			else if (strcmp(order, "PRICE") == 0)
+			else if (strcmp(command, "PRICE") == 0)
 			{
 				cout << "Print by Price order\n";
 				menu.print();
 			}
-			delete[] order;
 		}
 		else if (strcmp(command, "INSERT") == 0)
 		{
-			char* tempName = new char[100];
 			int price;
 			cout << "Menu name : ";
 			cin.get();
-			getName(tempName);
+			getName(command);
 			cout << "price : ";
 			cin >> price;
-			tree.insert(tempName, price);
-			menu.insert(tempName, price);
+			tree.insert(command, price);
+			menu.insert(command, price);
 
 			words = menu.getCount();
-			delete[] tempName;
 		}
 		else if (strcmp(command, "SEARCH") == 0)
 		{
@@ -126,12 +123,10 @@ int main()
 				continue;
 			}
 
-			char* tempName = new char[100];
 			cout << "Menu name : ";
 			cin.get();
-			getName(tempName);
-			menu.search(tempName);
-			delete[] tempName;
+			getName(command);
+			menu.search(command);
 
 		}
 		else if (strcmp(command, "DELETE") == 0)
@@ -142,15 +137,13 @@ int main()
 				continue;
 			}
 
-			char* tempName = new char[100];
 			cin.get();
-			getName(tempName);
+			getName(command);
 
 
-			menu.delNode(tempName);
-			tree.delNode(tempName);
+			menu.delNode(command);
+			tree.delNode(command);
 			words = menu.getCount();
-			delete[] tempName;
 
 		}
 		else if (strcmp(command, "EXIT") == 0)

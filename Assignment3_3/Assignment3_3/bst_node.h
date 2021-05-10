@@ -90,6 +90,8 @@ BST::~BST()
 {
 	removeTree(root);
 	root = nullptr;
+
+	_CrtDumpMemoryLeaks();
 }
 
 void BST::removeTree(bst_node* pNode)
@@ -103,7 +105,6 @@ void BST::removeTree(bst_node* pNode)
 		delete pNode;
 	}
 
-	_CrtDumpMemoryLeaks();
 }
 
 int BST::getCount()
@@ -113,7 +114,6 @@ int BST::getCount()
 void BST::insert(char* nameIn, int priceIn)
 {
 	bst_node* currentBst = new bst_node();
-	bst_node* tempBst = new bst_node();
 	menu_node* newMenu = new menu_node();
 	newMenu->setMenu(nameIn);
 	newMenu->setPrice(priceIn);
@@ -128,6 +128,7 @@ void BST::insert(char* nameIn, int priceIn)
 	{
 		_insert(root, currentBst);
 	}
+	return;
 }
 bst_node* BST::_insert(bst_node* rootIn, bst_node* currentNode)
 {
@@ -163,7 +164,7 @@ void BST::Print_IN(bst_node* pNode)
 		if (strlen(pNode->getNode()->getMenu()) < 8)
 		{
 			cout << "\t";
-		}\
+		}
 
 		cout << "\t\t" << pNode->getNode()->getPrice() << "\n";
 
