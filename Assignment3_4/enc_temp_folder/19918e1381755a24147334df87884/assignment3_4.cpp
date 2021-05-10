@@ -236,6 +236,7 @@ int main()
     }
 
 
+
     delete[] command;
    
     return 0;

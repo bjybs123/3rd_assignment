@@ -53,6 +53,7 @@ private:
 
 public:
     Link();
+    ~Link();
     Node* getHead();
     int getScore()
     {
@@ -80,6 +81,17 @@ Link::Link()
     pHead = nullptr;
     count = 0;
     score = 0;
+}
+Link::~Link()
+{
+    while (pHead)
+    {
+        Node* movingNode = pHead;
+        pHead = pHead->getNext();
+        delete movingNode;
+    }
+
+    _CrtDumpMemoryLeaks();
 }
 int Link::getCount()
 {
@@ -154,15 +166,17 @@ void Link::insert(char* nameIn)
 }
 void Link::delNode(char* cardIn)
 {
-    Node* prevNode = NULL;
+    Node* prevNode = nullptr;
     Node* currNode = pHead;
     while (currNode && (strcmp(currNode->getCard(), cardIn) != 0))
     {
         prevNode = currNode;
         currNode = currNode->getNext();
     }
-    if (currNode) {
-        if (prevNode) {
+    if (currNode)
+    {
+        if (prevNode)
+        {
             prevNode->setNext(currNode->getNext());
             --count;
             delete currNode;
@@ -219,6 +233,7 @@ void Link::place_discard(Link* discardIn, Link* dealerIn)
         }
         curNode->setNext(tempHead);
     }
+
     srand((unsigned int)time(NULL));
 
 
@@ -335,7 +350,7 @@ void Link::pick(Link* cardpile)
 }
 void Link::print()
 {
-    Node* tempNode = new Node();
+    Node* tempNode;
     tempNode = pHead;
 
     while (tempNode != nullptr)
@@ -347,7 +362,7 @@ void Link::print()
 }
 void Link::qprint()
 {
-    Node* tempNode = new Node();
+    Node* tempNode;
     tempNode = pHead;
 
     while (tempNode != nullptr)
