@@ -72,6 +72,7 @@ public:
     void pick(Link*);
     void place(Link* discardIn);
     void setScore(int);
+    void destroy();
     
 };
 
@@ -84,6 +85,11 @@ Link::Link()
 }
 Link::~Link()
 {
+
+    _CrtDumpMemoryLeaks();
+}
+void Link::destroy()
+{
     while (pHead)
     {
         Node* movingNode = pHead;
@@ -91,7 +97,6 @@ Link::~Link()
         delete movingNode;
     }
 
-    _CrtDumpMemoryLeaks();
 }
 int Link::getCount()
 {
@@ -99,6 +104,7 @@ int Link::getCount()
 }
 void Link::initial()
 {
+
     int i, j;
     const char* suit[SUITS] = { "H", "D", "C", "S" };
     const char* face[FACES] = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
@@ -106,7 +112,6 @@ void Link::initial()
     for (i = 0; i < SUITS; ++i)
         for (j = 0; j < FACES; ++j)
             insert(suit[i], face[j]);
-
 }
 void Link::insert(const char* suit, const char* face)
 {

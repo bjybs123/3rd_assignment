@@ -238,6 +238,11 @@ int main()
 
     delete[] command;
    
+    Deck.destroy();
+    Discard_tray.destroy();
+    Dealer.destroy();
+    Player.destroy();
+
     return 0;
 
 }
