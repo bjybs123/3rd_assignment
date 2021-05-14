@@ -1,5 +1,9 @@
 #pragma once
 
+#include <iostream>
+
+using namespace std;
+
 class A_Node
 {
 private:
@@ -29,7 +33,7 @@ public:
 	W_Node();
 	~W_Node();
 	W_Node* getNext();
-	void setNext(W_Node*  );
+	void setNext(W_Node*);
 };
 
 
@@ -42,7 +46,16 @@ private:
 	W_Node alphaHead;
 
 public:
-
+	students();
+	~students();
+	A_Node* getHead();
+	W_Node* getYearhead();
+	W_Node* getMajorhead();
+	W_Node* getAlphahead();
+	void setHead(A_Node*);
+	void setYearhead(W_Node*);
+	void setMajorhead(W_Node*);
+	void setAlphahead(W_Node*);
 };
 
 
@@ -102,4 +115,49 @@ W_Node* W_Node::getNext()
 void W_Node::setNext(W_Node* nextIn)
 {
 	pNext = nextIn;
+}
+
+//students' methos functions
+students::students()
+{
+	pHead = nullptr;
+	yearHead = nullptr;
+	majorHead = nullptr;
+	alphaHead = nullptr;
+}
+students::~students()
+{
+	;
+}
+A_Node* students::getHead()
+{
+	return pHead;
+}
+W_Node* students::getYearhead()
+{
+	return yearHead;
+}
+W_Node* students::getMajorhead()
+{
+	return majorHead;
+}
+W_Node* students::getAlphahead()
+{
+	return alphaHead;
+}
+void students::setHead(A_Node* headIn)
+{
+	pHead = headIn;
+}
+void students::setYearhead(W_Node* headIn)
+{
+	yearHead = headIn;
+}
+void students::setMajorhead(W_Node* headIn)
+{
+	majorHead = headIn;
+}
+void students::setAlphahead(W_Node* headIn)
+{
+	alphaHead = headIn;
 }
