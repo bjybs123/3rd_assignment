@@ -1,0 +1,3 @@
+StudentID,Major,Name
+2018202030,Computer Science,JIyong Park
+2018202099,Chinese literature,Namsun Choi
