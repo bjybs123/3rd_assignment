@@ -4,160 +4,262 @@
 
 using namespace std;
 
-class A_Node
-{
-private:
-	char* information;
-	A_Node* pNext;
-	W_Node* list;
-
-public:
-	A_Node();
-	~A_Node();
-	char* getInfo();
-	void setInfo(char*);
-	A_Node* getNext();
-	void setNext(A_Node*);
-	W_Node* getList();
-	void setList(W_Node*);
-
-
-};
-
-class W_Node
-{
-private:
-	char* Word;
-	W_Node* pNext;
-public:
-	W_Node();
-	~W_Node();
-	W_Node* getNext();
-	void setNext(W_Node*);
-};
-
-
-class students
-{
-private:
-	A_Node* pHead;
-	W_Node* yearHead;
-	W_Node* majorHead;
-	W_Node alphaHead;
-
-public:
-	students();
-	~students();
-	A_Node* getHead();
-	W_Node* getYearhead();
-	W_Node* getMajorhead();
-	W_Node* getAlphahead();
-	void setHead(A_Node*);
-	void setYearhead(W_Node*);
-	void setMajorhead(W_Node*);
-	void setAlphahead(W_Node*);
-};
-
-
-//A_Node's method functions
-A_Node::A_Node()
-{
-	information = new char[100];
-	pNext = nullptr;
-	list = nullptr;
-}
-A_Node::~A_Node()
-{
-	delete[] information;
-}
-char* A_Node::getInfo()
-{
-	return information;
-}
-void A_Node::setInfo(char* infoIn)
+void my_strcpy(char* str1, char* str2)
 {
 	int i = 0;
-	while ((information[i] = infoIn[i]) != '\0')
-		++i;
+	while ((str1[i] = str2[i++]) != '\0');
+	str1[i] = '\0';
+
 	return;
 }
-A_Node* A_Node::getNext()
+
+template<typename T>
+int Compare(T a, T b)
 {
-	return pNext;
-}
-void A_Node::setNext(A_Node* nextIn)
-{
-	pNext = nextIn;
-}
-W_Node* A_Node::getList()
-{
-	return list;
-}
-void A_Node::setList(W_Node* listIn)
-{
-	list = listIn;
+	return a - b;
 }
 
-//W_Node's method functions
-W_Node::W_Node()
+template<>
+int Compare<char>(char c1, char c2)
 {
-	Word = new char[100];
-	pNext = nullptr;
-}
-W_Node::~W_Node()
-{
-	delete[] Word;
-}
-W_Node* W_Node::getNext()
-{
-	return pNext;
-}
-void W_Node::setNext(W_Node* nextIn)
-{
-	pNext = nextIn;
+	return c1 - c2;
 }
 
-//students' methos functions
-students::students()
+template<>
+int Compare<char*>(char* str1, char* str2)
 {
-	pHead = nullptr;
-	yearHead = nullptr;
-	majorHead = nullptr;
-	alphaHead = nullptr;
+	return strcmp(str1, str2);
 }
-students::~students()
+
+
+
+class student_node
 {
-	;
-}
-A_Node* students::getHead()
+private:
+	char* ID;
+	char* major;
+	char* name;
+	student_node* pNext;
+	student_node* yearNext;
+	student_node* majorNext;
+	student_node* alphaNext;
+
+public:
+	student_node()
+	{
+		ID = new char[100];
+		major = new char[100];
+		name = new char[100];
+		pNext = nullptr;
+		yearNext = nullptr;
+		majorNext = nullptr;
+		alphaNext = nullptr;
+	}
+	student_node(char* idIn, char* majorIn, char* nameIn)
+	{
+		ID = new char[100];
+		major = new char[100];
+		name = new char[100];
+		pNext = nullptr;
+		yearNext = nullptr;
+		majorNext = nullptr;
+		alphaNext = nullptr;
+
+		my_strcpy(ID, idIn);
+		my_strcpy(major, majorIn);
+		my_strcpy(name, nameIn);
+	}
+	~student_node()
+	{
+		delete[] ID;
+		delete[] major;
+		delete[] name;
+	}
+	char* getID()
+	{
+		return ID;
+	}
+	char* getMajor()
+	{
+		return major;
+	}
+	char* getName()
+	{
+		return name;
+	}
+	void setID(char* idIn)
+	{
+		int i = 0;
+		while ((ID[i] = idIn[i]) != '\0')
+		{
+			++i;
+		}
+		ID[i] = '\0';
+	}
+	void setMajor(char* majorIn)
+	{
+		int i = 0;
+		while ((major[i] = majorIn[i]) != '\0')
+		{
+			++i;
+		}
+		major[i] = '\0';
+	}
+	void setName(char* nameIn)
+	{
+		int i = 0;
+		while ((name[i] = nameIn[i]) != '\0')
+		{
+			++i;
+		}
+		name[i] = '\0';
+	}
+	student_node* getPnext()
+	{
+		return pNext;
+	}
+	student_node* getYearnext()
+	{
+		return yearNext;
+	}
+	student_node* getMajornext()
+	{
+		return majorNext;
+	}
+	student_node* getAlphanext()
+	{
+		return alphaNext;
+	}
+	void setPnext(student_node* nextIn)
+	{
+		pNext = nextIn;
+	}
+	void setYearnext(student_node* nextIn)
+	{
+		yearNext = nextIn;
+	}
+	void setMajornext(student_node* nextIn)
+	{
+		majorNext = nextIn;
+	}
+	void setAlphanext(student_node* nextIn)
+	{
+		alphaNext = nextIn;
+	}
+
+};
+
+template<typename T>
+class node
 {
-	return pHead;
-}
-W_Node* students::getYearhead()
+private:
+	T data;
+	node* pNext;
+	student_node* sNext;
+
+public:
+
+	node()
+	{
+		data = NULL;
+		pNext = nullptr;
+		sNext = nullptr;
+	}
+	node(T dataIn)
+	{
+		data = dataIn;
+		pNext = nullptr;
+		sNext = nullptr;
+	}
+	void setNext(node* nextIn)
+	{
+		pNext = nextIn;
+	}
+	node* getNext()
+	{
+		return pNext;
+	}
+	student_node* getSnext()
+	{
+		return sNext;
+	}
+	void setSnext(student_node* nextIn)
+	{
+		sNext = nextIn;
+	}
+	void print()
+	{
+		student_node* movingNode = sNext;
+		while (movingNode)
+		{
+			cout << "id : " << movingNode->getID() << " major : " << movingNode->getMajor() << " name : " << movingNode->getName() << "\n";
+			movingNode = movingNode->getPnext();
+		}
+	}
+
+	
+
+};
+
+template<typename T>
+class Link
 {
-	return yearHead;
-}
-W_Node* students::getMajorhead()
-{
-	return majorHead;
-}
-W_Node* students::getAlphahead()
-{
-	return alphaHead;
-}
-void students::setHead(A_Node* headIn)
-{
-	pHead = headIn;
-}
-void students::setYearhead(W_Node* headIn)
-{
-	yearHead = headIn;
-}
-void students::setMajorhead(W_Node* headIn)
-{
-	majorHead = headIn;
-}
-void students::setAlphahead(W_Node* headIn)
-{
-	alphaHead = headIn;
-}
+private:
+	student_node* stuHead;
+	node<T>* lHead;
+
+public:
+	Link()
+	{
+		stuHead = nullptr;
+		lHead = nullptr;
+	}
+	void addNode(T data)
+	{
+		node<T>* newNode = new node<T>;
+	}
+	void setstuHead(student_node* headIn)
+	{
+		stuHead = headIn;
+	}
+	student_node* getstuHead()
+	{
+		return stuHead;
+	}
+	node<T>* getlHead()
+	{
+		return lHead;
+	}
+	void setlHead(node<T>* headIn)
+	{
+		lHead = headIn;
+	}
+	void insert_stu(char* idIn, char* majorIn, char* nameIn)
+	{
+		student_node* newNode = new student_node(idIn, majorIn, nameIn);
+		if (stuHead == nullptr)
+		{
+			stuHead = newNode;
+		}
+		else
+		{
+			student_node* movingNode = stuHead;
+			while (movingNode->getPnext() != nullptr)
+			{
+				movingNode = movingNode->getPnext();
+			}
+			movingNode->setPnext(newNode);
+
+		}
+	}
+	void print()
+	{
+		student_node* movingNode = stuHead;
+		while (movingNode)
+		{
+			cout << "id : " << movingNode->getID() << "\t" << "major : " << movingNode->getMajor() << "\t" << "name : " << movingNode->getName() << "\n";
+			movingNode = movingNode->getPnext();
+		}
+	}
+};
+
