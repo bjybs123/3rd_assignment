@@ -2,6 +2,6 @@
 
 
 2018202030,Computer Engineering,Jiyong Park
-2018202099,Chinese literature,Namsun Choi
-2013202033,Korean literature,john
+2008202099,Chinese literature,Namsun Choi
+2013202033,Asap literature,Apple
 2013203040,Computer Science,Jiwon Song

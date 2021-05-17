@@ -1,8 +1,7 @@
 #include <fstream>
 #include "link.h"
 
-template<typename T>
-void FiletoData(Link<T>* link)
+void FiletoData(Link<int>* link, Link<int>* id, Link<char*>* major, Link<char>* name)
 {
 	ifstream fin("students.txt");
 	if (fin.fail())
@@ -24,7 +23,7 @@ void FiletoData(Link<T>* link)
 	bool majorIn = false;
 	while (fin.get(c))
 	{
-		
+
 		if (c == ',')
 		{
 			if (idIn == false && majorIn == false)
@@ -44,7 +43,11 @@ void FiletoData(Link<T>* link)
 		{
 
 			tempName[i] = '\0';
-			link->insert_stu(tempID, tempMajor, tempName);
+			student_node* newNode = new student_node(tempID, tempMajor, tempName);
+			link->insert_stu(newNode);
+			id->insert_2D(newNode);
+			major->insert_2D(newNode);
+			name->insert_2D(newNode);
 
 			i = 0;
 			idIn = false;
@@ -69,7 +72,11 @@ void FiletoData(Link<T>* link)
 		}
 	}
 	tempName[i] = '\0';
-	link->insert_stu(tempID, tempMajor, tempName);
+	student_node* newNode = new student_node(tempID, tempMajor, tempName);
+	link->insert_stu(newNode);
+	major->insert_2D(newNode);
+	id->insert_2D(newNode);
+	name->insert_2D(newNode);
 
 	delete[] tempID;
 	delete[] tempMajor;
@@ -77,15 +84,16 @@ void FiletoData(Link<T>* link)
 	fin.close();
 }
 
+
 int main()
 {
-	Link<int>* Input = new Link<int>();			//linked list that listed by input order
+	Link<int>* input = new Link<int>();			//linked list that listed by input order
 	Link<int>* year = new Link<int>();			//linked list that listed by year order
 	Link<char*>* major = new Link<char*>();			//linked list that listed by major order
 	Link<char>* alpha = new Link<char>();			//linked list that listed by alpha order
 	
-	FiletoData(Input);
 
+	FiletoData(input, year, major, alpha);
 
 	char* command = new char[100];
 
@@ -97,9 +105,8 @@ int main()
 	cout << "CMD>> ";
 	cin >> command;
 
-
-
-	Input->print();
+	
+	input->print();
 
 	delete[] command;
 	return 0;

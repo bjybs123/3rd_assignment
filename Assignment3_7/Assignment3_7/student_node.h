@@ -1,7 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include <cstdlib>
 using namespace std;
+
+
 
 void my_strcpy(char* str1, char* str2)
 {
@@ -11,9 +14,30 @@ void my_strcpy(char* str1, char* str2)
 
 	return;
 }
+
+
+
+template<typename T>
+int Compare(T a, T b)
+{
+	return a - b;
+}
+template<>
+int Compare<char>(char c1, char c2)
+{
+	return c1 - c2;
+}
+template<>
+int Compare<char*>(char* str1, char* str2)
+{
+	return strcmp(str1, str2);
+}
+
+
 class student_node
 {
 private:
+	int year;
 	char* ID;
 	char* major;
 	char* name;
@@ -25,6 +49,7 @@ private:
 public:
 	student_node()
 	{
+		year = 0;
 		ID = new char[100];
 		major = new char[100];
 		name = new char[100];
@@ -35,6 +60,7 @@ public:
 	}
 	student_node(char* idIn, char* majorIn, char* nameIn)
 	{
+		year = 0;
 		ID = new char[100];
 		major = new char[100];
 		name = new char[100];
@@ -44,6 +70,7 @@ public:
 		alphaNext = nullptr;
 
 		my_strcpy(ID, idIn);
+		setYear(idIn);
 		my_strcpy(major, majorIn);
 		my_strcpy(name, nameIn);
 	}
@@ -91,6 +118,32 @@ public:
 			++i;
 		}
 		name[i] = '\0';
+	}
+	void setYear(char* idIn)
+	{
+		int i = 0;
+		char* tempStr = new char[10];
+
+		while (idIn[i] != '\0')
+		{
+			if (i <= 3)
+			{
+				tempStr[i] = idIn[i];
+				
+			}
+			if (i == 4)
+			{
+				break;
+			}
+			++i;
+		}
+		tempStr[i] = '\0';
+		year = atoi(tempStr);
+		delete[] tempStr;
+	}
+	int getYear()
+	{
+		return year;
 	}
 	student_node* getPnext()
 	{
