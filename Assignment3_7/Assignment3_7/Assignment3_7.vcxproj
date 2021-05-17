@@ -143,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="link.h" />
+    <ClInclude Include="node.h" />
+    <ClInclude Include="student_node.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="students.txt" />

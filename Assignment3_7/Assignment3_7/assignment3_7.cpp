@@ -1,8 +1,8 @@
 #include <fstream>
 #include "link.h"
 
-template<typename Y>
-void FiletoData(Link<Y>* link)
+template<typename T>
+void FiletoData(Link<T>* link)
 {
 	ifstream fin("students.txt");
 	if (fin.fail())
@@ -80,7 +80,12 @@ void FiletoData(Link<Y>* link)
 int main()
 {
 	Link<int>* Input = new Link<int>();			//linked list that listed by input order
+	Link<int>* year = new Link<int>();			//linked list that listed by year order
+	Link<char*>* major = new Link<char*>();			//linked list that listed by major order
+	Link<char>* alpha = new Link<char>();			//linked list that listed by alpha order
+	
 	FiletoData(Input);
+
 
 	char* command = new char[100];
 
@@ -93,10 +98,8 @@ int main()
 	cin >> command;
 
 
+
 	Input->print();
-
-
-
 
 	delete[] command;
 	return 0;
