@@ -148,6 +148,5 @@ int main()
 
 	delete[] command;
 
-	_CrtDumpMemoryLeaks();
 	return 0;
 }
