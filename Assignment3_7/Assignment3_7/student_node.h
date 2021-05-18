@@ -1,10 +1,25 @@
 #pragma once
 
+
+
 #include <iostream>
 #include <cstdlib>
+#include <crtdbg.h>
+
+#ifdef _DEBUG
+#ifndef DBG_NEW 
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
+#define new DBG_NEW 
+#endif 
+#endif // _DEBUG
 using namespace std;
 
-
+#ifdef _DEBUG
+#ifndef DBG_NEW 
+#define DBG_NEW new ( _NORMAL_BLOCK , FILE , LINE ) 
+#define new DBG_NEW 
+#endif 
+#endif // _DEBUG
 
 void my_strcpy(char* str1, char* str2)
 {
@@ -34,6 +49,8 @@ int Compare<char*>(char* str1, char* str2)
 }
 
 
+
+
 class student_node
 {
 private:
@@ -47,17 +64,6 @@ private:
 	student_node* alphaNext;
 
 public:
-	student_node()
-	{
-		year = 0;
-		ID = new char[100];
-		major = new char[100];
-		name = new char[100];
-		pNext = nullptr;
-		yearNext = nullptr;
-		majorNext = nullptr;
-		alphaNext = nullptr;
-	}
 	student_node(char* idIn, char* majorIn, char* nameIn)
 	{
 		year = 0;

@@ -3,7 +3,6 @@
 #include "node.h"
 
 
-//template<typename T, template<typename L> class NODE>
 
 template<typename T>	
 class Link		//integrated
@@ -52,7 +51,73 @@ public:
 
 		}
 	}
-	
+	void insert_2D(student_node* nodeIn)
+	{
+		student_node* checkNode = nodeIn;
+		while (checkNode)
+		{
+			insertNode(checkNode);
+			checkNode = checkNode->getPnext();
+		}
+
+	}
+	void insertNode(student_node* nodeIn)
+	{
+		
+
+		if (lHead == nullptr)
+		{
+			node<T>* newNode = new node<T>(nodeIn->getMajor());
+			lHead = newNode;
+			lHead->insert(nodeIn);
+		}
+		else
+		{
+			node<T>* prevNode = lHead;
+			node<T>* movingNode = lHead;
+			while (movingNode)
+			{
+
+				if (Compare(movingNode->getData(), nodeIn->getMajor()) == 0)
+				{
+					movingNode->insert(nodeIn);
+					break;
+				}
+
+				else if (Compare(movingNode->getData(), nodeIn->getMajor()) > 0)
+				{
+					if (movingNode == prevNode)
+					{
+						node<T>* newNode = new node<T>(nodeIn->getMajor());
+						newNode->insert(nodeIn);
+						lHead = newNode;
+						newNode->setPnext(movingNode);
+
+						break;
+					}
+					else
+					{
+						node<T>* newNode = new node<T>(nodeIn->getMajor());
+						newNode->insert(nodeIn);
+						prevNode->setPnext(newNode);
+						newNode->setPnext(movingNode);
+
+					}
+					break;
+				}
+				if (movingNode->getPnext() == nullptr)
+				{
+					node<T>* newNode = new node<T>(nodeIn->getMajor());
+					newNode->insert(nodeIn);
+					movingNode->setPnext(newNode);
+					break;
+				}
+				prevNode = movingNode;
+				movingNode = movingNode->getPnext();
+			}
+		}
+
+	}
 	void print()
 	{
 		student_node* movingNode = stuHead;
@@ -62,6 +127,26 @@ public:
 			
 			movingNode = movingNode->getPnext();
 		}
+	}
+
+	void deletAllNode()
+	{
+		student_node* moving1 = stuHead;
+		while (moving1)
+		{
+			student_node* deleteNode = moving1;
+			delete deleteNode;
+			moving1 = moving1->getPnext();
+		}
+
+		node<T>* moving2 = lHead;
+		while (moving2)
+		{
+			node* deleteNode = moving2;
+			delete deleteNode;
+			moving2 = moving2->getPnext();
+		}
+		return;
 	}
 };
 
@@ -118,19 +203,19 @@ public:
 		while (checkNode)
 		{
 			insertNode(checkNode);
-			//linkIn->insertStuNode(checkNode); 
 			checkNode = checkNode->getPnext();
 		}
+		
 	}
 	void insertNode(student_node* nodeIn)
 	{
-		node<char*>* newNode = new node<char*>(nodeIn->getMajor());
-		//
+		
+
 		if (lHead == nullptr)
 		{
-
+			node<char*>* newNode = new node<char*>(nodeIn->getMajor());
 			lHead = newNode;
-			//insertStuNode(nodeIn);             여기서도 compare이 진행이 되어야함
+			lHead->insert(nodeIn);
 		}
 		else
 		{
@@ -138,30 +223,38 @@ public:
 			node<char*>* movingNode = lHead;
 			while (movingNode)
 			{
-				if (strcmp(movingNode->getData(), nodeIn->getMajor()) == 0)
+				
+				if (Compare(movingNode->getData(), nodeIn->getMajor()) == 0)
 				{
-					cout << "same...\n";
+					movingNode->insert(nodeIn);
 					break;
-					//insertStuNode(nodeIn);             여기서도 compare이 진행이 되어야함
 				}
 
-				else if (strcmp(movingNode->getData(), nodeIn->getMajor()) > 0)
+				else if (Compare(movingNode->getData(), nodeIn->getMajor()) > 0)
 				{
 					if (movingNode == prevNode)
 					{
+						node<char*>* newNode = new node<char*>(nodeIn->getMajor());
+						newNode->insert(nodeIn);
 						lHead = newNode;
 						newNode->setPnext(movingNode);
+						
+						break;
 					}
 					else
 					{
+						node<char*>* newNode = new node<char*>(nodeIn->getMajor());
+						newNode->insert(nodeIn);
 						prevNode->setPnext(newNode);
 						newNode->setPnext(movingNode);
+						
 					}
-
 					break;
 				}
 				if (movingNode->getPnext() == nullptr)
 				{
+					node<char*>* newNode = new node<char*>(nodeIn->getMajor());
+					newNode->insert(nodeIn);
 					movingNode->setPnext(newNode);
 					break;
 				}
@@ -179,6 +272,35 @@ public:
 			cout << "id : " << movingNode->getID() << "\t" << "major : " << movingNode->getMajor() << "\t" << "name : " << movingNode->getName() << "\n";
 			movingNode = movingNode->getPnext();
 		}
+	}
+	void print2D()
+	{
+		node<char*>* movingNode = lHead;
+		cout << "============================================================================\n";
+		while (movingNode)
+		{
+			cout << movingNode->getData() << "\n";
+			movingNode->print(movingNode->getSnext());
+			movingNode = movingNode->getPnext();
+			cout << "\n";
+		}
+		cout << "============================================================================\n";
+
+	}
+
+	void deleteNode()
+	{
+		node<char*>* moving2 = lHead;
+		node<char*>* deleteNode;
+		while (moving2 != nullptr)
+		{
+			deleteNode = moving2;
+			moving2 = moving2->getPnext();
+			delete[] deleteNode->getData();
+			delete deleteNode;
+		}
+		lHead = nullptr;
+		return;
 	}
 };
 
@@ -237,6 +359,7 @@ public:
 			insertNode(checkNode);
 			checkNode = checkNode->getPnext();
 		}
+
 	}
 	void insertNode(student_node* nodeIn)
 	{
@@ -258,13 +381,13 @@ public:
 		year = atoi(tempyear);
 		delete[] tempyear;
 
-		node<int>* newNode = new node<int>(year);
-		//
+		
+
 		if (lHead == nullptr)
 		{
-
+			node<int>* newNode = new node<int>(year);
 			lHead = newNode;
-			//insertStuNode(nodeIn);             여기서도 compare이 진행이 되어야함
+			lHead->insert(nodeIn);
 		}
 		else
 		{
@@ -272,30 +395,38 @@ public:
 			node<int>* movingNode = lHead;
 			while (movingNode)
 			{
-				if (movingNode->getData() == year)
+
+				if (Compare(movingNode->getData(), nodeIn->getYear()) == 0)
 				{
-					cout << "same...\n";
+					movingNode->insert(nodeIn);
 					break;
-					//movingNode->insertStuNode(nodeIn);             여기서도 compare이 진행이 되어야함
 				}
-				
-				else if (Compare(movingNode->getData(), year) > 0)
+
+				else if (Compare(movingNode->getData(), nodeIn->getYear()) > 0)
 				{
 					if (movingNode == prevNode)
 					{
+						node<int>* newNode = new node<int>(year);
+						newNode->insert(nodeIn);
 						lHead = newNode;
 						newNode->setPnext(movingNode);
+
+						break;
 					}
 					else
 					{
+						node<int>* newNode = new node<int>(year);
+						newNode->insert(nodeIn);
 						prevNode->setPnext(newNode);
 						newNode->setPnext(movingNode);
+
 					}
-					
 					break;
 				}
 				if (movingNode->getPnext() == nullptr)
 				{
+					node<int>* newNode = new node<int>(year);
+					newNode->insert(nodeIn);
 					movingNode->setPnext(newNode);
 					break;
 				}
@@ -303,22 +434,74 @@ public:
 				movingNode = movingNode->getPnext();
 			}
 		}
-
 	}
-	
 	void print()
 	{
+		cout << "============================================================================\n"; 
+		cout << "StudentID";
+		cout.width(30);
+		cout <<  "Major";
+		cout.width(40);
+		cout <<  "Name\n";
+
 		student_node* movingNode = stuHead;
 		while (movingNode)
 		{
-			cout << "id : " << movingNode->getID() << "\t" << "major : " << movingNode->getMajor() << "\t" << "name : " << movingNode->getName() << "\n";
+			
+			cout <<  movingNode->getID();
+			cout.width(30);
+			cout <<  movingNode->getMajor();
+			cout.width(40);
+			cout <<  movingNode->getName() << "\n";
 			movingNode = movingNode->getPnext();
 		}
+
+		cout << "============================================================================\n";
+	}
+	void print2D()
+	{
+		node<int>* movingNode = lHead;
+		cout << "============================================================================\n";
+		
+		cout << "Name\n";
+		while (movingNode)
+		{
+			cout << movingNode->getData() << "\n";
+			movingNode->print(movingNode->getSnext());
+			movingNode = movingNode->getPnext();
+			cout << "\n";
+		}
+		cout << "============================================================================\n";
+	}
+	void deletestuNode()
+	{
+		student_node* movingNode = stuHead;
+		student_node* deleteNode;
+		while (movingNode != nullptr)
+		{
+			deleteNode = movingNode;
+			movingNode = movingNode->getPnext();
+			delete deleteNode;
+		}
+	}
+
+	void deleteNode()
+	{
+		node<int>* moving2 = lHead;
+		//node<int>* deleteNode;
+		while (moving2)
+		{
+			lHead = lHead->getPnext();
+			delete moving2;
+			moving2 = lHead;
+		}
+		lHead = nullptr;
+		return;
 	}
 };
 
 template<>
-class Link<char>		//year
+class Link<char>		//alpha
 {
 private:
 	student_node* stuHead;
@@ -329,6 +512,10 @@ public:
 	{
 		stuHead = nullptr;
 		lHead = nullptr;
+	}
+	~Link()
+	{
+		
 	}
 	void setstuHead(student_node* headIn)
 	{
@@ -370,21 +557,19 @@ public:
 		while (checkNode)
 		{
 			insertNode(checkNode);
-			//linkIn->insertStuNode(checkNode); 
 			checkNode = checkNode->getPnext();
 		}
+
 	}
 	void insertNode(student_node* nodeIn)
 	{
-		char C = toupper(nodeIn->getName()[0]);
+		
 
-		node<char>* newNode = new node<char>(C);
-		//
 		if (lHead == nullptr)
 		{
-
+			node<char>* newNode = new node<char>(toupper(nodeIn->getName()[0]));
 			lHead = newNode;
-			//insertStuNode(nodeIn);             여기서도 compare이 진행이 되어야함
+			lHead->insert(nodeIn);
 		}
 		else
 		{
@@ -392,30 +577,37 @@ public:
 			node<char>* movingNode = lHead;
 			while (movingNode)
 			{
-				if (movingNode->getData() == C)
+
+				if (Compare(movingNode->getData(), nodeIn->getName()[0]) == 0)
 				{
-					cout << "same...\n";
+					movingNode->insert(nodeIn);
 					break;
-					//insertStuNode(nodeIn);             여기서도 compare이 진행이 되어야함
 				}
 
-				else if (Compare(movingNode->getData(), C) > 0)
+				else if (Compare(movingNode->getData(), nodeIn->getName()[0]) > 0)
 				{
 					if (movingNode == prevNode)
 					{
+						node<char>* newNode = new node<char>(toupper(nodeIn->getName()[0]));
+						newNode->insert(nodeIn);
 						lHead = newNode;
 						newNode->setPnext(movingNode);
+						break;
 					}
 					else
 					{
+						node<char>* newNode = new node<char>(toupper(nodeIn->getName()[0]));
+						newNode->insert(nodeIn);
 						prevNode->setPnext(newNode);
 						newNode->setPnext(movingNode);
-					}
 
+					}
 					break;
 				}
 				if (movingNode->getPnext() == nullptr)
 				{
+					node<char>* newNode = new node<char>(toupper(nodeIn->getName()[0]));
+					newNode->insert(nodeIn);
 					movingNode->setPnext(newNode);
 					break;
 				}
@@ -423,16 +615,41 @@ public:
 				movingNode = movingNode->getPnext();
 			}
 		}
-
 	}
-
 	void print()
 	{
 		student_node* movingNode = stuHead;
 		while (movingNode)
 		{
+
 			cout << "id : " << movingNode->getID() << "\t" << "major : " << movingNode->getMajor() << "\t" << "name : " << movingNode->getName() << "\n";
-			movingNode = movingNode->getPnext();
+			movingNode = movingNode->getAlphanext();
 		}
+	}
+	void print2D()
+	{
+		node<char>* movingNode = lHead;
+		cout << "============================================================================\n";
+		while (movingNode)
+		{
+			cout << movingNode->getData() << "\n";
+			movingNode->print(movingNode->getSnext());
+			movingNode = movingNode->getPnext();
+			cout << "\n";
+		}
+		cout << "============================================================================\n";
+	}
+	void deleteNode()
+	{
+		node<char>* moving2 = lHead;
+		node<char>* deleteNode;
+		while (moving2 != nullptr)
+		{
+			deleteNode = moving2;
+			moving2 = moving2->getPnext();
+			delete deleteNode;
+		}
+
+		return;
 	}
 };

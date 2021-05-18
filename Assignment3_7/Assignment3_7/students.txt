@@ -1,7 +1,11 @@
-
-
-
-2018202030,Computer Engineering,Jiyong Park
-2008202099,Chinese literature,Namsun Choi
-2013202033,Asap literature,Apple
-2013203040,Computer Science,Jiwon Song
+2015001093,Computer Science,Jack
+2015001047,Computer Science,Hubert
+2016001032,Computer Science,Fernando
+2017003089,Chemistry,John
+2017001066,Computer Science,Steven
+2017002005,Information Convergence,Holmes
+2015004096,Mathematics,Fermat
+2019002057,Information Convergence,Felix
+2017004088,Mathematics,Helen
+2019003077,Chemistry,Salvatore
+2019002059,Information Convergence,Jenifer

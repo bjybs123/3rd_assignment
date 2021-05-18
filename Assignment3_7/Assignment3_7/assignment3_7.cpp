@@ -1,6 +1,8 @@
 #include <fstream>
 #include "link.h"
 
+
+
 void FiletoData(Link<int>* link, Link<int>* id, Link<char*>* major, Link<char>* name)
 {
 	ifstream fin("students.txt");
@@ -41,7 +43,7 @@ void FiletoData(Link<int>* link, Link<int>* id, Link<char*>* major, Link<char>* 
 		}
 		else if (c == '\n' && idIn == true && majorIn == true)
 		{
-
+			
 			tempName[i] = '\0';
 			student_node* newNode = new student_node(tempID, tempMajor, tempName);
 			link->insert_stu(newNode);
@@ -72,11 +74,14 @@ void FiletoData(Link<int>* link, Link<int>* id, Link<char*>* major, Link<char>* 
 		}
 	}
 	tempName[i] = '\0';
-	student_node* newNode = new student_node(tempID, tempMajor, tempName);
-	link->insert_stu(newNode);
-	major->insert_2D(newNode);
-	id->insert_2D(newNode);
-	name->insert_2D(newNode);
+	if (strcmp(tempName, "") != 0)
+	{
+		student_node* newNode = new student_node(tempID, tempMajor, tempName);
+		link->insert_stu(newNode);
+		major->insert_2D(newNode);
+		id->insert_2D(newNode);
+		name->insert_2D(newNode);
+	}
 
 	delete[] tempID;
 	delete[] tempMajor;
@@ -105,9 +110,44 @@ int main()
 	cout << "CMD>> ";
 	cin >> command;
 
+	if (strcmp(command, "1") == 0)
+	{
+		cout << "Print File\n";
+		input->print();
+	}
+	else if (strcmp(command, "2") == 0)
+	{
+		cout << "Print by ID\n";
+		year->print2D();
+	}
+	else if (strcmp(command, "3") == 0)
+	{
+		cout << "Print by Major\n";
+		major->print2D();
+		
+	}
+	else if (strcmp(command, "4") == 0)
+	{
+		cout << "Print by Name\n";
+		alpha->print2D();
+	}
 	
-	input->print();
+	
+
+	input->deletestuNode();
+
+	year->deleteNode();
+	major->deleteNode();
+	alpha->deleteNode();
+
+
+	delete input;
+	delete year;
+	delete major;
+	delete alpha;
 
 	delete[] command;
+
+	_CrtDumpMemoryLeaks();
 	return 0;
 }
