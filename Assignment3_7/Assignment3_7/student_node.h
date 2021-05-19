@@ -8,13 +8,6 @@
 
 using namespace std;
 
-#ifdef _DEBUG
-#ifndef DBG_NEW 
-#define DBG_NEW new ( _NORMAL_BLOCK , FILE , LINE ) 
-#define new DBG_NEW 
-#endif 
-#endif // _DEBUG
-
 void my_strcpy(char* str1, char* str2)
 {
 	int i = 0;
