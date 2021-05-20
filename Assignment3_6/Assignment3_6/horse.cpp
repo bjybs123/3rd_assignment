@@ -3,6 +3,7 @@
 //horse's methods
 horse::horse()
 {
+	live = ALIVE;
 	horseName = nullptr;
 	pNext = nullptr;
 	pCarry = nullptr;
@@ -10,6 +11,7 @@ horse::horse()
 }
 horse::horse(const char* nameIn)
 {
+	live = ALIVE;
 	horseName = new char[10];
 	int i = 0;
 	while (nameIn[i] != '\0')
@@ -21,6 +23,14 @@ horse::horse(const char* nameIn)
 	pNext = nullptr;
 	pCarry = nullptr;
 	pPos = nullptr;
+}
+bool horse::getLive()
+{
+	return live;
+}
+void horse::dead()
+{
+	live = DEAD;
 }
 char* horse::getHorseName()
 {

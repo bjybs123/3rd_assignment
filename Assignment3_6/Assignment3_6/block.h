@@ -6,6 +6,7 @@
 #define RIGHTUP 6
 #define LEFTUP 11
 
+
 class block
 {
 private:

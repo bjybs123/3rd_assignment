@@ -1,6 +1,16 @@
 #include "move.h"
 
 //move's methods
+_move::_move()
+{
+	step = 0;
+	pNext = nullptr;
+}
+_move::_move(int stepNum)
+{
+	step = stepNum;
+	pNext = nullptr;
+}
 int _move::getStep()
 {
 	return step;
@@ -109,4 +119,39 @@ int moveLink::throwYut()
 		else if (count == 3)
 			return 6;
 	}
+}
+
+void moveLink::insert(int moveNum)
+{
+	_move* movingNode = pHead;
+	_move* newMove = new _move(moveNum);
+	if (pHead == nullptr)
+	{
+		pHead = newMove;
+	}
+	else
+	{
+		while (movingNode)
+		{
+			if (movingNode->getpNext() == nullptr)
+			{
+				movingNode->setpNext(newMove);
+				break;
+			}
+			movingNode = movingNode->getpNext();
+		}
+	}
+
+}
+void moveLink::clear()
+{
+	_move* moving2 = pHead;
+	_move* deleteNode;
+	while (moving2 != nullptr)
+	{
+		deleteNode = moving2;
+		moving2 = moving2->getpNext();
+		delete deleteNode;
+	}
+	pHead = nullptr;
 }

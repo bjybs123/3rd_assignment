@@ -4,6 +4,8 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#define ALIVE true
+#define DEAD false
 using namespace std;
 class _move
 {
@@ -12,6 +14,8 @@ private:
 	_move* pNext;
 
 public:
+	_move();
+	_move(int);
 	int getStep();
 	void setStep(int);
 	_move* getpNext();
@@ -29,5 +33,7 @@ public:
 	_move* getHead();
 	void setHead(_move*);
 	int throwYut();
+	void insert(int moveNum);
+	void clear();
 };
 

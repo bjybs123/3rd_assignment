@@ -39,7 +39,7 @@ void board::initial()
 		{
 			while (movingNode)
 			{
-				if (movingNode->getNodeNumber() == 6 && numberCount == 21)
+				if (movingNode->getNodeNumber() == 6 && numberCount >= 21)
 				{
 					block* prevNode = rightCorner;
 					block* movingNode = rightCorner;
@@ -69,6 +69,7 @@ void board::initial()
 						}
 						++numberCount;
 					}
+					movingNode->setpNext(leftDownCorner);
 				}
 				else if (movingNode->getNodeNumber() == 11 && numberCount >= 26)
 				{
@@ -100,6 +101,7 @@ void board::initial()
 						}
 						++numberCount;
 					}
+					movingNode->setpNext(startNode);
 				}
 				else if (movingNode->getpNext() == nullptr && numberCount <= 20)
 				{
@@ -204,6 +206,7 @@ void board::printNode(int nodeNum)
 }
 void board::printBoard()
 {
+	cout << "\n";
 	int	gboard[7][7] = { {11, 10, 9, 0, 8, 7, 6},
 						{12, 26, 0, 0, 0, 21, 5},
 						{13, 0, 27, 0, 22, 0, 4},
@@ -221,17 +224,43 @@ void board::printBoard()
 		}
 		cout << "\n";
 	}
+	cout << "\n";
 }
 void board::goYut(horse* yut, int go)
 {
 	block* movingNode = pHead;
-
-	--go;
-	while (movingNode && go)
+	if (yut->getpPos() != NULL)
 	{
-		movingNode = movingNode->getpNext();
-		--go;
+		movingNode = yut->getpPos();
+		movingNode->setpOn(NULL);
+		if (yut->getpPos()->getNodeNumber() == RIGHTUP || yut->getpPos()->getNodeNumber() == LEFTUP)
+		{
+			--go;
+			movingNode = movingNode->getpShortcut();
+		}
 	}
-	movingNode->setpOn(yut);
 
+	if (yut->getpPos() != NULL)
+	{
+		while (movingNode && go)
+		{
+			movingNode = movingNode->getpNext();
+			--go;
+		}
+		movingNode->setpOn(yut);
+		yut->setpPos(movingNode);
+	}
+	else
+	{
+		--go;
+		while (movingNode && go)
+		{
+			movingNode = movingNode->getpNext();
+			--go;
+		}
+		movingNode->setpOn(yut);
+		yut->setpPos(movingNode);
+	}
+
+	
 }
