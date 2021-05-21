@@ -5,7 +5,8 @@ class block;
 class horse
 {
 private:
-	int live;
+	bool goal;
+	bool live;
 	char* horseName;
 	horse* pNext;
 	horse* pCarry;
@@ -16,6 +17,8 @@ public:
 	horse(const char*);
 	bool getLive();
 	void dead();
+	bool getGoal();
+	void setGoal(bool);
 	char* getHorseName();
 	horse* getpNext();
 	void setpNext(horse*);

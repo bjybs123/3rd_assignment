@@ -64,6 +64,7 @@ int main()
 	char* command = new char[100];
 	board* Gboard = new board();
 	moveLink* moves = new moveLink();
+
 	horse* yut1 = nullptr;
 	horse* yut2 = nullptr;
 	horse* yut3 = nullptr;
@@ -72,24 +73,22 @@ int main()
 	Gboard->initial();
 	Gboard->printBoard();
 
-	
+
 
 	cout << "Player 1 turn!throw/exit)\n";
 	while (true)
 	{
-		
+
 		cout << "CMD>> ";
 		cin >> command;
 
-if (strcmp(command, "throw") == 0)
+		if (strcmp(command, "throw") == 0)
 		{
 			int result;
 			result = moves->throwYut();
 			++yutCount;
-			if(yutCount > 2)
-				moves->insert(result);
-			else
-				moves->insert(result);
+			moves->insert(result);
+			moves->movesIncrement();
 			cout << "moves : " << result << "\n";
 
 			//다시 할지 안할지
@@ -98,92 +97,69 @@ if (strcmp(command, "throw") == 0)
 				cout << "Throw again!\n";
 				continue;
 			}
-			if (yutCount > 1)
+			_move* checking = moves->getHead();
+			cout << "Yut Results : ";
+			int count;
+			for (count = 0; count < yutCount && checking; ++count)
 			{
-				_move* checking = moves->getHead();
-				cout << "Yut Results : ";
-				for (int i = 1; i <= yutCount && checking; ++i)
-				{
-					if (i > 1)
-						cout << "\t";
-					cout << i << ". ";
-					cout << checking->getStep();
-					checking = checking->getpNext();
-				}
-				cout << "\n";
+				if (count > 0)
+					cout << "\t";
+				cout << count + 1 << ". ";
+				cout << checking->getStep();
+				checking = checking->getpNext();
 			}
-			else
-			{
-				_move* checking = moves->getHead();
-				cout << "Yut Results : ";
-				for (int i = 1; i <= yutCount && checking; ++i)
-				{
-					cout  << i << ". ";
-					cout << checking->getStep();
-					checking = checking->getpNext();
-				}
-				cout << "\n";
-			}
+
+			cout << "\n";
 
 
 			//고르기
-			horse* selectedHorse;
-			int selHorse;
-			int selmove;
-			cout << "Select move : ";
-			cin >> selmove;
-			cout << "Selecet horse : ";
-			printHorse(yut1, yut2, yut3, yut4);
-			cin >> selHorse;
-			if (selHorse == 1 && yut1 == nullptr)
+			while (count)
 			{
-				yut1 = new horse("A1");
-			}
-			if (selHorse == 2 && yut2 == nullptr)
-			{
-				yut2 = new horse("A2");
-			}
-			if (selHorse == 3 && yut3 == nullptr)
-			{
-				yut3 = new horse("A3");
-			}
-			if (selHorse == 4 && yut4 == nullptr)
-			{
-				yut4 = new horse("A4");
-			}
-			selectedHorse = selectHorse(yut1, yut2, yut3, yut4, selHorse);
+				horse* selectedHorse;
+				int selHorse;
+				int selmove;
+				cout << "Select move : ";
+				cin >> selmove;
+				printHorse(yut1, yut2, yut3, yut4);
+				cout << "Selecet horse : ";
+				cin >> selHorse;
 
-			if (yutCount > 1)
-			{
-				while (yutCount > 0)
+				if (selHorse == 1 && yut1 == nullptr)
 				{
-					_move* movingNode = moves->getHead();
-					while (movingNode)
-					{
-						--selHorse;
-						if (!selHorse)
-						{
-							Gboard->goYut(selectedHorse, movingNode->getStep());
-						}
-						movingNode = movingNode->getpNext();
-					}
-					--yutCount;
+					yut1 = new horse("A1");
 				}
-			}
-			else
-			{
-				Gboard->goYut(selectedHorse, moves->getHead()->getStep());
-				yutCount = 0;
+				if (selHorse == 2 && yut2 == nullptr)
+				{
+					yut2 = new horse("A2");
+				}
+				if (selHorse == 3 && yut3 == nullptr)
+				{
+					yut3 = new horse("A3");
+				}
+				if (selHorse == 4 && yut4 == nullptr)
+				{
+					yut4 = new horse("A4");
+				}
+				selectedHorse = selectHorse(yut1, yut2, yut3, yut4, selHorse);
+
+				//backDo should be covered
+				Gboard->moveYut(selectedHorse, moves, yutCount, selHorse, selmove);
+
+				Gboard->printBoard();
+				--count;
 			}
 			moves->clear();
+			yutCount = 0;
 		}
 		else if (strcmp(command, "exit") == 0)
 		{
 			break;
 		}
-		Gboard->printBoard();
+
 	}
 
 	cout << "fin";
 	return 0;
 }
+
+

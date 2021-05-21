@@ -34,6 +34,18 @@ _move* moveLink::getHead()
 {
 	return pHead;
 }
+int moveLink::getMoves()
+{
+	return moves;
+}
+void moveLink::setMoves(int movesIn)
+{
+	moves = movesIn;
+}
+void moveLink::movesIncrement()
+{
+	++moves;
+}
 void moveLink::setHead(_move* moveIn)
 {
 	pHead = moveIn;
@@ -154,4 +166,6 @@ void moveLink::clear()
 		delete deleteNode;
 	}
 	pHead = nullptr;
+	setMoves(0);
+	
 }

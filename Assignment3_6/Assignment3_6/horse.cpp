@@ -3,6 +3,7 @@
 //horse's methods
 horse::horse()
 {
+	goal = false;
 	live = ALIVE;
 	horseName = nullptr;
 	pNext = nullptr;
@@ -11,6 +12,7 @@ horse::horse()
 }
 horse::horse(const char* nameIn)
 {
+	goal = false;
 	live = ALIVE;
 	horseName = new char[10];
 	int i = 0;
@@ -31,6 +33,14 @@ bool horse::getLive()
 void horse::dead()
 {
 	live = DEAD;
+}
+bool horse::getGoal()
+{
+	return goal;
+}
+void horse::setGoal(bool goalIn)
+{
+	goal = goalIn;
 }
 char* horse::getHorseName()
 {

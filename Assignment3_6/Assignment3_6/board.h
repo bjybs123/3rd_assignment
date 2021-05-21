@@ -12,4 +12,5 @@ public:
 	void goYut(horse*, int);
 	void printNode(int);
 	void printBoard();
+	void moveYut(horse*, moveLink*, int, int, int);
 };
