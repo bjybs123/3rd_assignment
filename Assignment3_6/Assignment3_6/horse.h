@@ -5,6 +5,7 @@ class block;
 class horse
 {
 private:
+	bool isCarried;
 	bool goal;
 	bool live;
 	char* horseName;
@@ -14,6 +15,7 @@ private:
 
 public:
 	horse();
+	~horse();
 	horse(const char*);
 	bool getLive();
 	void dead();
@@ -27,5 +29,7 @@ public:
 	block* getpPos();
 	void setpPos(block*);
 	void printYut();
+	void setCarried();
+	bool ifCarried();
 };
 

@@ -11,7 +11,7 @@ void printHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4)
 		cout << i << ". Hand";
 		++i;
 	}
-	else if (yut1->getGoal() == true || yut1->getLive() == false);
+	else if (yut1->getGoal() == true || yut1->getLive() == false || yut1->ifCarried() == true);
 	else
 	{
 		cout << i << ". " << yut1->getHorseName();
@@ -23,7 +23,7 @@ void printHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4)
 		cout << "\t" << i << ". Hand";
 		++i;
 	}
-	else if (yut2->getGoal() == true || yut2->getLive() == false);
+	else if (yut2->getGoal() == true || yut2->getLive() == false || yut2->ifCarried() == true);
 	else
 	{
 		cout << "\t" << i << ". " << yut2->getHorseName();
@@ -35,7 +35,7 @@ void printHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4)
 		cout << "\t" << i << ". Hand";
 		++i;
 	}
-	else if (yut3->getGoal() == true || yut3->getLive() == false);
+	else if (yut3->getGoal() == true || yut3->getLive() == false || yut3->ifCarried() == true);
 	else
 	{
 		cout << "\t" << i << ". " << yut3->getHorseName();
@@ -47,7 +47,7 @@ void printHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4)
 		cout << "\t" << i << ". Hand";
 		++i;
 	}
-	else if (yut4->getGoal() == true || yut4->getLive() == false);
+	else if (yut4->getGoal() == true || yut4->getLive() == false || yut4->ifCarried() == true);
 	else
 	{
 		cout << "\t" << i << ". " << yut4->getHorseName();

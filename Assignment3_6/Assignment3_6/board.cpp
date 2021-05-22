@@ -297,8 +297,36 @@ void board::goYut(horse* yut, int goes)
 				}
 				if (movingNode->getNodeNumber() == leftCenter)
 				{
-					movingNode->setpOn(yut);
-					yut->setpPos(movingNode);
+					if (movingNode->getpOn())
+					{
+						if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
+						{
+							movingNode->getpOn()->setpPos(NULL);
+							movingNode->getpOn()->dead();
+							movingNode->setpOn(NULL);
+							break;
+						}
+						else if (movingNode->getpOn()->getHorseName()[0] == yut->getHorseName()[0])
+						{
+							while (movingNode->getpOn())
+							{
+								if (movingNode->getpOn()->getpCarry() == nullptr)
+								{
+									movingNode->getpOn()->setpCarry(yut);
+									yut->setCarried();
+									yut->setpPos(NULL);
+									break;
+								}
+								movingNode->setpOn(movingNode->getpOn()->getpCarry());
+							}
+							
+						}
+					}
+					else
+					{
+						movingNode->setpOn(yut);
+						yut->setpPos(movingNode);
+					}
 					break;
 				}
 				movingNode = movingNode->getpNext();
@@ -312,13 +340,46 @@ void board::goYut(horse* yut, int goes)
 				yut->getpPos()->setpOn(NULL);
 				yut->setpPos(NULL);
 				yut->setGoal(true);
+				while (yut->getpCarry() != nullptr)
+				{
+					yut->setGoal(true);
+					yut->setpCarry(yut->getpCarry());
+				}
 				return;
 			}
 			movingNode = movingNode->getpNext();
 			--goes;
 		}
-		movingNode->setpOn(yut);
-		yut->setpPos(movingNode);
+		//jkhhkh
+		if (movingNode->getpOn())
+		{
+			if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
+			{
+				movingNode->getpOn()->setpPos(NULL);
+				movingNode->getpOn()->dead();
+				movingNode->setpOn(NULL);
+			}
+			else if (movingNode->getpOn()->getHorseName()[0] == yut->getHorseName()[0])
+			{
+				while (movingNode->getpOn())
+				{
+					if (movingNode->getpOn()->getpCarry() == nullptr)
+					{
+						movingNode->getpOn()->setpCarry(yut);
+						yut->setCarried();
+						yut->setpPos(NULL);
+						break;
+					}
+					movingNode->setpOn(movingNode->getpOn()->getpCarry());
+				}
+				
+			}
+		}
+		else
+		{
+			movingNode->setpOn(yut);
+			yut->setpPos(movingNode);
+		}
 	}
 	else
 	{
@@ -327,8 +388,35 @@ void board::goYut(horse* yut, int goes)
 			movingNode = movingNode->getpNext();
 			--goes;
 		}
-		movingNode->setpOn(yut);
-		yut->setpPos(movingNode);
+		if (movingNode->getpOn())
+		{
+			if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
+			{
+				movingNode->getpOn()->setpPos(NULL);
+				movingNode->getpOn()->dead();
+				movingNode->setpOn(NULL);
+			}
+			else if (movingNode->getpOn()->getHorseName()[0] == yut->getHorseName()[0])
+			{
+				while (movingNode->getpOn())
+				{
+					if (movingNode->getpOn()->getpCarry() == nullptr)
+					{
+						movingNode->getpOn()->setpCarry(yut);
+						yut->setCarried();
+						yut->setpPos(NULL);
+						break;
+					}
+					movingNode->setpOn(movingNode->getpOn()->getpCarry());
+				}
+				
+			}
+		}
+		else
+		{
+			movingNode->setpOn(yut);
+			yut->setpPos(movingNode);
+		}
 	}
 
 }

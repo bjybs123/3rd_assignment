@@ -3,6 +3,7 @@
 //horse's methods
 horse::horse()
 {
+	isCarried = false;
 	goal = false;
 	live = ALIVE;
 	horseName = nullptr;
@@ -12,6 +13,7 @@ horse::horse()
 }
 horse::horse(const char* nameIn)
 {
+	isCarried = false;
 	goal = false;
 	live = ALIVE;
 	horseName = new char[10];
@@ -25,6 +27,10 @@ horse::horse(const char* nameIn)
 	pNext = nullptr;
 	pCarry = nullptr;
 	pPos = nullptr;
+}
+horse::~horse()
+{
+	delete[] horseName;
 }
 bool horse::getLive()
 {
@@ -73,4 +79,12 @@ void horse::setpPos(block* blockIn)
 void horse::printYut()
 {
 	cout << horseName;
+}
+void horse::setCarried()
+{
+	isCarried = true;
+}
+bool horse::ifCarried()
+{
+	return isCarried;
 }
