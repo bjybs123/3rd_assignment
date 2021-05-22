@@ -81,7 +81,9 @@ horse* selectHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4, int numIn
 			++index;
 		}
 	}
-
+	for (i = 0; i < 4; ++i)
+		delete yutArray[i];
+	delete[] yutArray;
 }
 
 int main()
@@ -249,7 +251,7 @@ int main()
 						while (cin.get(c) && c != '\n');
 						continue;
 					}
-					printHorse(yut5, yut6, yut7, yut7);
+					printHorse(yut5, yut6, yut7, yut8);
 					cout << "Selecet horse : ";
 					cin >> selHorse;
 					selHorse -= 48;
