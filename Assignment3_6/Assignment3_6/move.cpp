@@ -91,7 +91,7 @@ int moveLink::throwYut()
 	else
 		yut4 = false;
 	//yut1µŞ¸éÀÌ xÀÚ 
-	//µµ 1, °³ 2, °É 3, À· 4, ¸ğ 5, µŞµµ 6
+	//µµ 1, °³ 2, °É 3, À· 4, ¸ğ 5, µŞµµ -1
 	if (yut1)
 	{
 		int count = 1;
@@ -129,7 +129,7 @@ int moveLink::throwYut()
 		else if (count == 2)
 			return 2;
 		else if (count == 3)
-			return 6;
+			return -1;
 	}
 }
 

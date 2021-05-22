@@ -5,6 +5,7 @@ class block;
 class horse
 {
 private:
+	int backNum;
 	bool isCarried;
 	bool goal;
 	bool live;
@@ -17,6 +18,8 @@ public:
 	horse();
 	~horse();
 	horse(const char*);
+	void setBack(int);
+	int getBack();
 	bool getLive();
 	void dead();
 	bool getGoal();

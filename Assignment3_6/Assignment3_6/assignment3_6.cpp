@@ -98,8 +98,6 @@ int main()
 	horse* yut4 = new horse("A4");
 
 
-	int backDo = 0;
-
 	Gboard->initial();
 	Gboard->printBoard();
 
@@ -136,7 +134,7 @@ int main()
 			while (yutCount)
 			{
 				moves->printMoves(yutCount);
-				
+
 				cout << "\n";
 				char c;
 				horse* selectedHorse;
@@ -159,8 +157,17 @@ int main()
 				cout << "Selecet horse : ";
 				cin >> selHorse;
 				selHorse -= 48;
-				
-				if(selHorse  > 4 || selHorse < 0)
+				int yuts = 0;
+				if (yut1->getGoal() == false && yut1->ifCarried() == false)
+					++yuts;
+				if (yut2->getGoal() == false && yut2->ifCarried() == false)	
+					++yuts;
+				if (yut3->getGoal() == false && yut3->ifCarried() == false)	
+					++yuts;
+				if (yut4->getGoal() == false && yut4->ifCarried() == false)	
+					++yuts;
+
+				if(selHorse  > yuts || selHorse < 0)
 				{
 					cout << "invaild input\n";
 					while (cin.get(c) && c != '\n');
@@ -169,8 +176,12 @@ int main()
 				selectedHorse = selectHorse(yut1, yut2, yut3, yut4, selHorse);
 
 				//backDo should be covered
-				Gboard->moveYut(selectedHorse, moves, yutCount, selmove, backDo);
-				cout << "backdo is : " << backDo << "\n";
+				Gboard->moveYut(selectedHorse, moves, yutCount, selmove, selectedHorse->getBack());
+
+				cout << "yut1 back is : " << yut1->getBack() << "\n";
+				cout << "yut2 back is : " << yut2->getBack() << "\n";
+				cout << "yut3 back is : " << yut3->getBack() << "\n";
+				cout << "yut4 back is : " << yut4->getBack() << "\n";
 				Gboard->printBoard();
 				--yutCount;
 			}

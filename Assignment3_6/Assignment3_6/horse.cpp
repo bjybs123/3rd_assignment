@@ -3,6 +3,7 @@
 //horse's methods
 horse::horse()
 {
+	backNum = 0;
 	isCarried = false;
 	goal = false;
 	live = ALIVE;
@@ -31,6 +32,14 @@ horse::horse(const char* nameIn)
 horse::~horse()
 {
 	delete[] horseName;
+}
+void horse::setBack(int backIn)
+{
+	backNum = backIn;
+}
+int horse::getBack()
+{
+	return backNum;
 }
 bool horse::getLive()
 {
