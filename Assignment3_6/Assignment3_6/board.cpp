@@ -297,6 +297,7 @@ void board::goYut(horse* yut, int goes)
 				}
 				if (movingNode->getNodeNumber() == leftCenter)
 				{
+					movingNode->setpOn(yut);
 					yut->setpPos(movingNode);
 					break;
 				}
