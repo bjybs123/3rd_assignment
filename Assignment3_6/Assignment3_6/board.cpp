@@ -331,7 +331,7 @@ void board::goYut(horse* yut, int goes)
 	}
 
 }
-void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int selHorse, int selMove)
+void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int selMove)
 {
 	if (yutCount > 1)
 	{
@@ -344,7 +344,8 @@ void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int sel
 				if (selMove == 0 && selectedHorse->getGoal() != true)
 				{
 					goYut(selectedHorse, movingNode->getStep());
-					break;
+					moves->delMove(movingNode->getStep());
+					return;
 				}
 				movingNode = movingNode->getpNext();
 			}
@@ -354,7 +355,9 @@ void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int sel
 	else
 	{
 		if (selectedHorse->getGoal() != true)
+		{
 			goYut(selectedHorse, moves->getHead()->getStep());
+		}
 		yutCount = 0;
 	}
 	

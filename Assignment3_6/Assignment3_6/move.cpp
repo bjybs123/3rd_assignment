@@ -169,3 +169,35 @@ void moveLink::clear()
 	setMoves(0);
 	
 }
+void moveLink::delMove(int moveIn)
+{
+	_move* prevNode = NULL;
+	_move* currNode = pHead;
+	while (currNode && currNode->getStep() !=moveIn) {
+		prevNode = currNode;
+		currNode = currNode->getpNext();
+	}
+	if (currNode) {
+		if (prevNode) {
+			prevNode->setpNext(currNode->getpNext());
+			delete currNode;
+		}
+		else {
+			pHead = currNode->getpNext();
+			delete currNode;
+		}
+	}
+}
+void moveLink::printMoves(int count)
+{
+	_move* checking = pHead;
+	int i = 1;
+	while (i <= count)
+	{
+		cout << i << ". ";
+		cout << checking->getStep();
+		cout << "\t";
+		checking = checking->getpNext();
+		++i;
+	}
+}

@@ -41,5 +41,7 @@ public:
 	int throwYut();
 	void insert(int moveNum);
 	void clear();
+	void delMove(int moveIn);
+	void printMoves(int count);
 };
 

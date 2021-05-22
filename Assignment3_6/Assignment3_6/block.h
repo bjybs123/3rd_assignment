@@ -1,7 +1,6 @@
 #pragma once
 #include "horse.h"
 #include "board.h"
-#include "move.h"
 
 #define RIGHTUP 6
 #define LEFTUP 11

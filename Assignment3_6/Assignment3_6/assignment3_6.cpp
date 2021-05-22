@@ -1,31 +1,58 @@
 
 #include "block.h"
+
+
+
 void printHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4)
 {
+	int i = 1;
 	if (yut1 == NULL)
 	{
-		cout << "1. Hand";
+		cout << i << ". Hand";
+		++i;
 	}
+	else if (yut1->getGoal() == true || yut1->getLive() == false);
 	else
-		cout << "1. " << yut1->getHorseName();
+	{
+		cout << i << ". " << yut1->getHorseName();
+		++i;
+	}
+
 	if (yut2 == NULL)
 	{
-		cout << "\t2. Hand";
+		cout << "\t" << i << ". Hand";
+		++i;
 	}
+	else if (yut2->getGoal() == true || yut2->getLive() == false);
 	else
-		cout << "\t2. " << yut2->getHorseName();
+	{
+		cout << "\t" << i << ". " << yut2->getHorseName();
+		++i;
+	}
+
 	if (yut3 == NULL)
 	{
-		cout << "\t. Hand";
+		cout << "\t" << i << ". Hand";
+		++i;
 	}
+	else if (yut3->getGoal() == true || yut3->getLive() == false);
 	else
-		cout << "\t3. " << yut3->getHorseName();
+	{
+		cout << "\t" << i << ". " << yut3->getHorseName();
+		++i;
+	}
+
 	if (yut4 == NULL)
 	{
-		cout << "\t4. Hand";
+		cout << "\t" << i << ". Hand";
+		++i;
 	}
+	else if (yut4->getGoal() == true || yut4->getLive() == false);
 	else
-		cout << "\t4. " << yut4->getHorseName();
+	{
+		cout << "\t" << i << ". " << yut4->getHorseName();
+		++i;
+	}
 	cout << "\n";
 
 }
@@ -99,54 +126,65 @@ int main()
 			}
 			_move* checking = moves->getHead();
 			cout << "Yut Results : ";
-			int count;
-			for (count = 0; count < yutCount && checking; ++count)
-			{
-				if (count > 0)
-					cout << "\t";
-				cout << count + 1 << ". ";
-				cout << checking->getStep();
-				checking = checking->getpNext();
-			}
 
-			cout << "\n";
-
+			
 
 			//°í¸£±â
-			while (count)
+			while (yutCount)
 			{
+				moves->printMoves(yutCount);
+				
+				cout << "\n";
+				char c;
 				horse* selectedHorse;
-				int selHorse;
-				int selmove;
+				char selHorse;
+				char selmove;
 				cout << "Select move : ";
 				cin >> selmove;
+				selmove -= 48;
+				if (selmove <= yutCount && selmove > 0)
+				{
+					cout << "good\n";
+				}
+				else
+				{
+					cout << "invaild input\n";
+					while (cin.get(c) && c != '\n');
+					continue;
+				}
 				printHorse(yut1, yut2, yut3, yut4);
 				cout << "Selecet horse : ";
 				cin >> selHorse;
-
+				selHorse -= 48;
 				if (selHorse == 1 && yut1 == nullptr)
 				{
 					yut1 = new horse("A1");
 				}
-				if (selHorse == 2 && yut2 == nullptr)
+				else if (selHorse == 2 && yut2 == nullptr)
 				{
 					yut2 = new horse("A2");
 				}
-				if (selHorse == 3 && yut3 == nullptr)
+				else if (selHorse == 3 && yut3 == nullptr)
 				{
 					yut3 = new horse("A3");
 				}
-				if (selHorse == 4 && yut4 == nullptr)
+				else if (selHorse == 4 && yut4 == nullptr)
 				{
 					yut4 = new horse("A4");
+				}
+				if(selHorse  > 4 || selHorse < 0)
+				{
+					cout << "invaild input\n";
+					while (cin.get(c) && c != '\n');
+					continue;
 				}
 				selectedHorse = selectHorse(yut1, yut2, yut3, yut4, selHorse);
 
 				//backDo should be covered
-				Gboard->moveYut(selectedHorse, moves, yutCount, selHorse, selmove);
+				Gboard->moveYut(selectedHorse, moves, yutCount, selmove);
 
 				Gboard->printBoard();
-				--count;
+				--yutCount;
 			}
 			moves->clear();
 			yutCount = 0;
