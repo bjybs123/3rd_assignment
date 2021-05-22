@@ -6,48 +6,47 @@
 void printHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4)
 {
 	int i = 1;
-	if (yut1 == NULL)
+	if (yut1->getGoal() == true || yut1->getLive() == false || yut1->ifCarried() == true);
+	else if (yut1->getpPos() == NULL)
 	{
 		cout << i << ". Hand";
 		++i;
 	}
-	else if (yut1->getGoal() == true || yut1->getLive() == false || yut1->ifCarried() == true);
 	else
 	{
 		cout << i << ". " << yut1->getHorseName();
 		++i;
 	}
-
-	if (yut2 == NULL)
+	if (yut2->getGoal() == true || yut2->getLive() == false || yut2->ifCarried() == true);
+	else if (yut2->getpPos() == NULL)
 	{
 		cout << "\t" << i << ". Hand";
 		++i;
 	}
-	else if (yut2->getGoal() == true || yut2->getLive() == false || yut2->ifCarried() == true);
 	else
 	{
 		cout << "\t" << i << ". " << yut2->getHorseName();
 		++i;
 	}
 
-	if (yut3 == NULL)
+	if (yut3->getGoal() == true || yut3->getLive() == false || yut3->ifCarried() == true);
+	else if (yut3->getpPos() == NULL)
 	{
 		cout << "\t" << i << ". Hand";
 		++i;
 	}
-	else if (yut3->getGoal() == true || yut3->getLive() == false || yut3->ifCarried() == true);
 	else
 	{
 		cout << "\t" << i << ". " << yut3->getHorseName();
 		++i;
 	}
 
-	if (yut4 == NULL)
+	if (yut4->getGoal() == true || yut4->getLive() == false || yut4->ifCarried() == true);
+	else if (yut4->getpPos() == NULL)
 	{
 		cout << "\t" << i << ". Hand";
 		++i;
 	}
-	else if (yut4->getGoal() == true || yut4->getLive() == false || yut4->ifCarried() == true);
 	else
 	{
 		cout << "\t" << i << ". " << yut4->getHorseName();
@@ -58,44 +57,48 @@ void printHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4)
 }
 horse* selectHorse(horse* yut1, horse* yut2, horse* yut3, horse* yut4, int numIn)
 {
-	if (yut1 != NULL && yut1->getLive() == DEAD)
-		cout << "yut1 is dead\n";
-	if (yut2 != NULL && yut2->getLive() == DEAD)
-		cout << "yut2 is dead\n";
-	if (yut3 != NULL && yut3->getLive() == DEAD)
-		cout << "yut3 is dead\n";
-	if (yut4 != NULL && yut4->getLive() == DEAD)
-		cout << "yut4 is dead\n";
+	int i = 0;
+	horse** yutArray = new horse *[4];
+	for (i = 0; i < 4; ++i)
+		yutArray[i] = new horse;
+	
+	yutArray[0] = yut1;
+	yutArray[1] = yut2;
+	yutArray[2] = yut3;
+	yutArray[3] = yut4;
 
-	if (yut1 != NULL && numIn == (yut1->getHorseName()[1] - 48))
+	int index = 1;
+	for (i = 0; i < 4; ++i)
 	{
-		return yut1;
+		if (yutArray[i]->getGoal() == true || yutArray[i]->ifCarried() == true)
+		{
+			continue;
+		}
+		else
+		{
+			if (index == numIn)
+				return yutArray[i];
+			++index;
+		}
 	}
-	else if (yut2 != NULL && numIn == (yut2->getHorseName()[1] - 48))
-	{
-		return yut2;
-	}
-	else if (yut3 != NULL && numIn == (yut3->getHorseName()[1] - 48))
-	{
-		return yut3;
-	}
-	else if (yut4 != NULL && numIn == (yut4->getHorseName()[1] - 48))
-	{
-		return yut4;
-	}
+
 }
 
 int main()
 {
+
 	int yutCount = 0;
 	char* command = new char[100];
 	board* Gboard = new board();
 	moveLink* moves = new moveLink();
 
-	horse* yut1 = nullptr;
-	horse* yut2 = nullptr;
-	horse* yut3 = nullptr;
-	horse* yut4 = nullptr;
+	horse* yut1 = new horse("A1");
+	horse* yut2 = new horse("A2");
+	horse* yut3 = new horse("A3");
+	horse* yut4 = new horse("A4");
+
+
+	int backDo = 0;
 
 	Gboard->initial();
 	Gboard->printBoard();
@@ -156,22 +159,7 @@ int main()
 				cout << "Selecet horse : ";
 				cin >> selHorse;
 				selHorse -= 48;
-				if (selHorse == 1 && yut1 == nullptr)
-				{
-					yut1 = new horse("A1");
-				}
-				else if (selHorse == 2 && yut2 == nullptr)
-				{
-					yut2 = new horse("A2");
-				}
-				else if (selHorse == 3 && yut3 == nullptr)
-				{
-					yut3 = new horse("A3");
-				}
-				else if (selHorse == 4 && yut4 == nullptr)
-				{
-					yut4 = new horse("A4");
-				}
+				
 				if(selHorse  > 4 || selHorse < 0)
 				{
 					cout << "invaild input\n";
@@ -181,8 +169,8 @@ int main()
 				selectedHorse = selectHorse(yut1, yut2, yut3, yut4, selHorse);
 
 				//backDo should be covered
-				Gboard->moveYut(selectedHorse, moves, yutCount, selmove);
-
+				Gboard->moveYut(selectedHorse, moves, yutCount, selmove, backDo);
+				cout << "backdo is : " << backDo << "\n";
 				Gboard->printBoard();
 				--yutCount;
 			}
@@ -193,7 +181,6 @@ int main()
 		{
 			break;
 		}
-
 	}
 
 	cout << "fin";

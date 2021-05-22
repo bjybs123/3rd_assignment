@@ -270,24 +270,28 @@ void board::printBoard()
 	}
 	cout << "\n";
 }
-void board::goYut(horse* yut, int goes)
+void board::goYut(horse* yut, int goes, int& backDo)
 {
 	block* movingNode = pHead;
+	//만약 윳이 판에 위치한다면
 	if (yut->getpPos() != NULL)
 	{
 		movingNode = yut->getpPos();
 		movingNode->setpOn(NULL);
+		//만약 윷이 판에 위치하고 좌측 코너 혹은 우측 코너에 위치할 경우
 		if (yut->getpPos()->getNodeNumber() == RIGHTUP || yut->getpPos()->getNodeNumber() == LEFTUP)
 		{
-			--goes;
-			movingNode = movingNode->getpShortcut();
+			--goes;						//움직일 수 잇는 위치를 하나 줄이고 
+			backDo = movingNode->getNodeNumber();		//전 값을 백도 블록에 저장한다.
+			movingNode = movingNode->getpShortcut(); //지름길으로 한칸 이동
 		}
 	}
-
+	//윷이 판 위에 존재할 경우 나머지 무브를 이동시킨다
 	if (yut->getpPos() != NULL)
 	{
 		if (yut->getpPos()->getNodeNumber() == rightCenter)				//윷이 오른쪽 링크의 중앙에 위치했을때 지름길을 이용하기위해 왼쪽 중앙에 위치시킨다.
 		{
+			yut->getpPos()->setpOn(NULL);
 			movingNode = pHead;
 			while (movingNode)
 			{
@@ -324,11 +328,13 @@ void board::goYut(horse* yut, int goes)
 					}
 					else
 					{
+						
 						movingNode->setpOn(yut);
 						yut->setpPos(movingNode);
 					}
 					break;
 				}
+				backDo = movingNode->getNodeNumber();
 				movingNode = movingNode->getpNext();
 			}
 		}
@@ -340,13 +346,14 @@ void board::goYut(horse* yut, int goes)
 				yut->getpPos()->setpOn(NULL);
 				yut->setpPos(NULL);
 				yut->setGoal(true);
-				while (yut->getpCarry() != nullptr)
+				while (yut->getpCarry() != nullptr)			//업는것이 존재하면 업는것다 골으로 설정한다
 				{
 					yut->setGoal(true);
 					yut->setpCarry(yut->getpCarry());
 				}
 				return;
 			}
+			backDo = movingNode->getNodeNumber();
 			movingNode = movingNode->getpNext();
 			--goes;
 		}
@@ -372,7 +379,6 @@ void board::goYut(horse* yut, int goes)
 					}
 					movingNode->setpOn(movingNode->getpOn()->getpCarry());
 				}
-				
 			}
 		}
 		else
@@ -385,6 +391,7 @@ void board::goYut(horse* yut, int goes)
 	{
 		while (movingNode && goes)
 		{
+			backDo = movingNode->getNodeNumber();
 			movingNode = movingNode->getpNext();
 			--goes;
 		}
@@ -420,8 +427,9 @@ void board::goYut(horse* yut, int goes)
 	}
 
 }
-void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int selMove)
+void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int selMove, int& backDo)
 {
+	//if selMove == 6 (뒷도)
 	if (yutCount > 1)
 	{
 		while (yutCount > 0)
@@ -432,7 +440,7 @@ void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int sel
 				--selMove;
 				if (selMove == 0 && selectedHorse->getGoal() != true)
 				{
-					goYut(selectedHorse, movingNode->getStep());
+					goYut(selectedHorse, movingNode->getStep(), backDo);
 					moves->delMove(movingNode->getStep());
 					return;
 				}
@@ -445,7 +453,7 @@ void board::moveYut(horse* selectedHorse, moveLink* moves, int yutCount, int sel
 	{
 		if (selectedHorse->getGoal() != true)
 		{
-			goYut(selectedHorse, moves->getHead()->getStep());
+			goYut(selectedHorse, moves->getHead()->getStep(), backDo);
 		}
 		yutCount = 0;
 	}
