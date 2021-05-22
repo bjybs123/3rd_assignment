@@ -328,14 +328,15 @@ void board::goYut(horse* yut, int goes, int backDo)
 				{
 					if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
 					{
+						yut->setpPos(movingNode);
 						yut->getpPos()->setpOn(NULL);
 						movingNode->setpOn(yut);
+						
 						horse* tempHorse = movingNode->getpOn();
 						while (tempHorse)
 						{
 							if (tempHorse->getpCarry() == nullptr)
 							{
-
 								tempHorse->setpPos(NULL);
 								tempHorse->dead();
 								break;
@@ -409,14 +410,17 @@ void board::goYut(horse* yut, int goes, int backDo)
 					{
 						if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
 						{
-							movingNode->setpOn(NULL);
+							yut->setpPos(movingNode);
+							yut->getpPos()->setpOn(NULL);
+							movingNode->setpOn(yut);
 							horse* tempHorse = movingNode->getpOn();
 							while (tempHorse)
 							{
+								tempHorse->dead();
 								if (tempHorse->getpCarry() == nullptr)
 								{
 									tempHorse->setpPos(NULL);
-									tempHorse->dead();
+
 									break;
 								}
 								tempHorse = tempHorse->getpCarry();
@@ -479,14 +483,17 @@ void board::goYut(horse* yut, int goes, int backDo)
 			//Áß¾ÓÀÏ¶§
 			if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
 			{
-				movingNode->setpOn(NULL);
+				yut->setpPos(movingNode);
+				yut->getpPos()->setpOn(NULL);
+				movingNode->setpOn(yut);
 				horse* tempHorse = movingNode->getpOn();
 				while (tempHorse)
 				{
+					tempHorse->dead();
 					if (tempHorse->getpCarry() == nullptr)
 					{
 						tempHorse->setpPos(NULL);
-						tempHorse->dead();
+
 						break;
 					}
 					tempHorse = tempHorse->getpCarry();
@@ -526,14 +533,17 @@ void board::goYut(horse* yut, int goes, int backDo)
 						{
 							if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
 							{
-								movingNode->setpOn(NULL);
+								yut->setpPos(movingNode);
+								yut->getpPos()->setpOn(NULL);
+								movingNode->setpOn(yut);
 								horse* tempHorse = movingNode->getpOn();
 								while (tempHorse)
 								{
+									tempHorse->dead();
 									if (tempHorse->getpCarry() == nullptr)
 									{
 										tempHorse->setpPos(NULL);
-										tempHorse->dead();
+										
 										break;
 									}
 									tempHorse = tempHorse->getpCarry();
@@ -581,14 +591,17 @@ void board::goYut(horse* yut, int goes, int backDo)
 		{
 			if (movingNode->getpOn()->getHorseName()[0] != yut->getHorseName()[0])
 			{
-				movingNode->setpOn(NULL);
+				yut->setpPos(movingNode);
+				yut->getpPos()->setpOn(NULL);
+				movingNode->setpOn(yut);
 				horse* tempHorse = movingNode->getpOn();
 				while (tempHorse)
 				{
+					tempHorse->dead();
 					if (tempHorse->getpCarry() == nullptr)
 					{
 						tempHorse->setpPos(NULL);
-						tempHorse->dead();
+
 						break;
 					}
 					tempHorse = tempHorse->getpCarry();
